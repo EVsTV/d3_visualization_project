@@ -24,41 +24,35 @@
         var child = xml.documentElement;
         child.classList.add("car");
         document.body.appendChild(child);
-        d3.select(".car")
+        var car = d3.select(".car")
         // Set the svg viewport dimensions.
             .attr("height", "100")
-        ;
+
+        var dim = car.node().getBBox();
+        var battery = loadComponentIntoCar("svg/car-battery.svg", "battery", "25", "30", car, dim.width - 35, 30);
+        var tank = loadComponentIntoCar("svg/car-tank.svg", "tank", "25", "30", car, dim.width - 35, 30);
+        var engine = loadComponentIntoCar("svg/engine.svg", "engine", "40", "40", car, 30, 30);
+
     });
-    d3.xml("svg/car-battery.svg").mimeType("image/svg+xml").get(function (error, xml) {
-        if (error) throw error;
-        var child = xml.documentElement;
-        child.classList.add("battery");
-        document.body.appendChild(child);
-        d3.select(".battery")
-        // Set the svg viewport dimensions.
-            .attr("width", "40")
-            .attr("height", "30");
-    });
-    d3.xml("svg/car-tank.svg").mimeType("image/svg+xml").get(function (error, xml) {
-        if (error) throw error;
-        var child = xml.documentElement;
-        child.classList.add("tank");
-        document.body.appendChild(child);
-        d3.select(".tank")
-        // Set the svg viewport dimensions.
-            .attr("width", "40")
-            .attr("height", "30");
-    });
-    d3.xml("svg/engine.svg").mimeType("image/svg+xml").get(function (error, xml) {
-        if (error) throw error;
-        var child = xml.documentElement;
-        child.classList.add("engine");
-        document.body.appendChild(child);
-        d3.select(".engine")
-        // Set the svg viewport dimensions.
-            .attr("width", "40")
-            .attr("height", "30");
-    });
+
+    function loadComponentIntoCar(filePath, cssClassString, widthString, heightString, car, posX = 0, posY = 0) {
+        d3.xml(filePath).mimeType("image/svg+xml").get(function (error, xml) {
+            if (error) throw error;
+            var child = xml.documentElement;
+            child.classList.add(cssClassString);
+            var componentGroup = car.append("g")
+                .attr("class", cssClassString)
+                .attr("transform", "translate(" + posX + ", " + posY + ")");
+            test = componentGroup
+            componentGroup.node().appendChild(child)
+            d3.select("svg." + cssClassString)
+            // Set the svg viewport dimensions.
+                .attr("width", widthString)
+                .attr("height", heightString);
+        });
+        var test = car.select("g." + cssClassString);
+        return test;
+    }
 
 </script>
 </body>
