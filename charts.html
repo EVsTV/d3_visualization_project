@@ -19,17 +19,19 @@
 
     // load external svg files
 
-    d3.xml("car-frame-svg.svg").mimeType("image/svg+xml").get(function(error, xml) {
+    d3.xml("svg/car-frame-svg.svg").mimeType("image/svg+xml").get(function (error, xml) {
         if (error) throw error;
         var child = xml.documentElement;
         child.classList.add("car");
+        child.currentScale = 1.4
         document.body.appendChild(child);
         d3.select(".car")
         // Set the svg viewport dimensions.
-            .attr("width", "400")
-            .attr("height", "100");
+            .attr("width", "800")
+            .attr("height", "200")
+        ;
     });
-    d3.xml("car-battery.svg").mimeType("image/svg+xml").get(function(error, xml) {
+    d3.xml("svg/car-battery.svg").mimeType("image/svg+xml").get(function (error, xml) {
         if (error) throw error;
         var child = xml.documentElement;
         child.classList.add("battery");
@@ -39,7 +41,7 @@
             .attr("width", "40")
             .attr("height", "30");
     });
-    d3.xml("car-tank.svg").mimeType("image/svg+xml").get(function(error, xml) {
+    d3.xml("svg/car-tank.svg").mimeType("image/svg+xml").get(function (error, xml) {
         if (error) throw error;
         var child = xml.documentElement;
         child.classList.add("tank");
@@ -49,7 +51,7 @@
             .attr("width", "40")
             .attr("height", "30");
     });
-    d3.xml("engine.svg").mimeType("image/svg+xml").get(function(error, xml) {
+    d3.xml("svg/engine.svg").mimeType("image/svg+xml").get(function (error, xml) {
         if (error) throw error;
         var child = xml.documentElement;
         child.classList.add("engine");
@@ -59,10 +61,6 @@
             .attr("width", "40")
             .attr("height", "30");
     });
-
-    // Select the svg element representing the image.
-
-
 
 </script>
 </body>
