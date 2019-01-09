@@ -1,4 +1,6 @@
 var ctx = document.getElementById("myAreaChart");
+var dataType = "Energy (MJ)"
+
 d3.json("./TV.json", function (data) {
     var TV = data
 
@@ -223,17 +225,24 @@ function pathTween(d1, precision, scale) {
 }
 
 
-function getScaler(data, selected) {
-    var selected = "Energy (MJ)"
+function getScaler(data, selected = "Energy (MJ)") {
     var scaler = d3.scaleLinear().domain([d3.min(data["Data"]["Values"], function (data) {
         if (data["Title"] == selected)
             return d3.min(data["Values"])
 
-    }), d3.max(data    ["Data"]["Values"], function (data) {
+    }), d3.max(data["Data"]["Values"], function (data) {
         if (data["Title"] == selected)
             return d3.max(data["Values"])
 
     })])
         .range([10, 60]);
     return scaler;
-}	
+}
+
+$(function () {
+    $(document).on('change', 'input:radio', function (event) {
+        if ($(this).is(':checked')) {
+            dataType = event.target["value"]
+        }
+    });
+});
