@@ -6,7 +6,7 @@
 	"Values" : [
 		{
 		"Title" : "Energy (MJ)",
-		"Values" :  [60000, 0, 10000, 27000]
+		"Values" :  [60000, 0, 10000, 270000]
 		}, 
 		{
 		"Title" : "Photochemical pollution (O3)",
