@@ -1,11 +1,16 @@
 var ctx = document.getElementById("myAreaChart");
+var TV;
+var EV;
+var activeData;
 d3.json("./TV.json", function(data){
-	var TV = data
+	TV = data
 
 	d3.json("./EV.json", function(dataEV){
-		var EV = dataEV
-		var scaler = getScaler([EV, TV])
-
+		EV = dataEV
+		activeData = getActiveData()
+		var scaler = getScaler(, "Energy (MJ)")
+		console.log(scaler(EV["Data"]["Values"][0]["Values"][0]))
+		console.log(scaler(EV["Data"]["Values"][0]["Values"][0]) / (scaler.range()[1] - scaler.range()[0]))
 		d3.xml("svg/car-frame-svg.svg").mimeType("image/svg+xml").get(function (error, xml) {
 			if (error) throw error;
 			var child = xml.documentElement;
@@ -15,6 +20,7 @@ d3.json("./TV.json", function(data){
 			// Set the svg viewport height dimension.
 				.attr("height", "100")
 
+			//Set default visualisation with : TV and Energy (MJ)
 			var dim = car.node().getBBox();
 			var tank = loadComponentIntoCar("svg/tank.svg", "tank", scaler(EV["Data"]["Values"][0]["Values"][0]), scaler(EV["Data"]["Values"][0]["Values"][0]), car, dim.width - 40, 30);	
 			var engine = loadComponentIntoCar("svg/thermEngine.svg", "engine", scaler(EV["Data"]["Values"][0]["Values"][1]) , scaler(EV["Data"]["Values"][0]["Values"][1]), car, 30, 30);
@@ -45,6 +51,11 @@ function loadComponentIntoCar(filePath, cssClassString, widthString, heightStrin
 var buttonEngine = document.getElementById("buttonEngine")
 var buttonTank = document.getElementById("buttonTank")
 var buttonNozzle = document.getElementById("buttonNozzle")
+
+var buttonEnergy = document.getElementById("energy")
+var buttonPhoto = document.getElementById("pollution")
+var buttonCO2 = document.getElementById("climate-change")
+
 
 var loopButton = document.getElementById("loop")
 var electricButton = document.getElementById("electric")
@@ -220,11 +231,31 @@ function pathTween(d1, precision, scale) {
     };
 }
 
-
+function getActiveData()
+{
+	if(buttonEnergy.checked == true)
+	{
+		var data = [EV, TV]
+		data[0]["Data"]["Values"] = [data[0]["Data"]["Values"][0]]
+		data[1]["Data"]["Values"] = [data[1]["Data"]["Values"][0]]
+	}
+	if(buttonPhoto.checked == true)
+	{
+		var data = [EV, TV]
+		data[0]["Data"]["Values"] = [data[0]["Data"]["Values"][1]]
+		data[1]["Data"]["Values"] = [data[1]["Data"]["Values"][1]]		
+	}
+	if(buttonCO2.checked == true)
+	{
+		var data = [EV, TV]
+		data[0]["Data"]["Values"] = [data[0]["Data"]["Values"][2]]
+		data[1]["Data"]["Values"] = [data[1]["Data"]["Values"][2]]		
+	}
+	return data
+}
 
 function getScaler(data, selected)
-{
-	var selected = "Energy (MJ)"		
+{		
 	var scaler = d3.scaleLinear().domain([d3.min(data, function(data){
 			return d3.min(data["Data"]["Values"], function(data){
 				if(data["Title"] == selected)
