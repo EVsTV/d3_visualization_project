@@ -23,6 +23,11 @@
     <!-- Custom styles for this template-->
     <link href="css/sb-admin.css" rel="stylesheet">
 
+    <!-- Boostrap for the buttons -->
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    
+    <!-- Custom styles for the buttons-->
+    <link href="css/bt.css" rel="stylesheet">
   </head>
 
   <body id="page-top">
@@ -63,7 +68,17 @@
 
 
       <div id="content-wrapper">
-
+	<div class="wrapper">
+  <div class="toggle_radio"  id="toggle_radio_container">
+    <input type="radio" class="toggle_option" id="ev_toggle" name="toggle_option">
+    <input type="radio" checked class="toggle_option" id="tv_toggle" name="toggle_option">
+    <input type="radio" class="toggle_option" id="other_toggle" name="toggle_option">
+    <label for="ev_toggle"><p>Electrique</p></label>
+    <label for="tv_toggle"><p>Thermique</p></label>
+    <label for="other_toggle"><p>Autre</p></label>
+    <div class="toggle_option_slider">
+    </div>
+  </div>
         <div class="container-fluid">
 
           <!-- Breadcrumbs-->
@@ -173,6 +188,23 @@
     <script src="js/demo/chart-area-demo.js"></script>
     <script src="js/demo/chart-bar-demo.js"></script>
     <script src="js/demo/chart-pie-demo.js"></script>
+    
+    <script>
+    var rad = document.getElementById("toggle_radio_container").getElementsByTagName("input");
+    console.log(rad)
+    var prev = null;
+    for(var i = 0; i < rad.length; i++) {
+        rad[i].onclick = function () {
+            (prev)? console.log(prev.id):null;
+            if(this !== prev) {
+                prev = this;
+            }
+            console.log(this.id)
+        };
+    }
+    console.log("Listeners Added")
+    </script>
+    
 
   </body>
 
