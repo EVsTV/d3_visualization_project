@@ -4,8 +4,7 @@ d3.json("./TV.json", function(data){
 
 	d3.json("./EV.json", function(dataEV){
 		var EV = dataEV
-		console.log(EV)
-		var scaler = getScaler(EV)
+		var scaler = getScaler([EV, TV])
 
 		d3.xml("svg/car-frame-svg.svg").mimeType("image/svg+xml").get(function (error, xml) {
 			if (error) throw error;
@@ -226,14 +225,16 @@ function pathTween(d1, precision, scale) {
 function getScaler(data, selected)
 {
 	var selected = "Energy (MJ)"		
-	var scaler = d3.scaleLinear().domain([d3.min(data["Data"]["Values"], function(data){
-			if(data["Title"] == selected)
-				return d3.min(data["Values"])
-				
-		}), d3.max(data	["Data"]["Values"], function(data){
+	var scaler = d3.scaleLinear().domain([d3.min(data, function(data){
+			return d3.min(data["Data"]["Values"], function(data){
+				if(data["Title"] == selected)
+					return d3.min(data["Values"])
+			})
+		}), d3.max(data, function(data){
+			return d3.max(data["Data"]["Values"], function(data){
 				if(data["Title"] == selected)
 					return d3.max(data["Values"])
-			
+			})
 		})])
 		.range([10, 60]);		
 	return scaler;
