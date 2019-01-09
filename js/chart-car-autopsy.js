@@ -38,18 +38,21 @@ var buttonEngine = document.getElementById("buttonEngine")
 var buttonTank = document.getElementById("buttonTank")
 var buttonNozzle = document.getElementById("buttonNozzle")
 
-buttonEngine.onclick = function () {
+var loopButton = document.getElementById("loop")
+
+loopButton.onclick = function () {
+    console.log("loop clicked")
     var bat = d3.select("svg.engine")
-    var p = bat.select("path")
-    var dEngineTherm = p.attr("d");
+    var pEngineTherm = bat.select("path")
+    var dEngineTherm = pEngineTherm.attr("d");
 
     d3.xml("svg/elecEngine.svg").mimeType("image/svg+xml").get(function (error, xml) {
         var child = xml.documentElement;
 
-        var p1 = d3.select(child).select("path");
-        var dEngineElectric = p1.attr("d")
+        var pEngineElectric = d3.select(child).select("path");
+        var dEngineElectric = pEngineElectric.attr("d")
 
-        p.transition().duration(2000)
+        pEngineTherm.transition().duration(2000)
             .on("start", function repeat() {
                 d3.active(this)
                     .attrTween("d", pathTween(dEngineElectric, 1, 0.8))
@@ -62,20 +65,18 @@ buttonEngine.onclick = function () {
                     .on("start", repeat);
             });
     });
-}
 
-buttonNozzle.onclick = function () {
     var bat = d3.select("svg.nozzle")
-    var p = bat.select("path")
-    var dNozzle = p.attr("d");
+    var pNozzle = bat.select("path")
+    var dNozzle = pNozzle.attr("d");
 
     d3.xml("svg/plug.svg").mimeType("image/svg+xml").get(function (error, xml) {
         var child = xml.documentElement;
 
-        var p1 = d3.select(child).select("path");
-        var dPlug = p1.attr("d")
+        var pPlug = d3.select(child).select("path");
+        var dPlug = pPlug.attr("d")
 
-        p.transition().duration(2000)
+        pNozzle.transition().duration(2000)
             .on("start", function repeat() {
                 d3.active(this)
                     .attrTween("d", pathTween(dPlug, 1, 0.8))
@@ -88,19 +89,17 @@ buttonNozzle.onclick = function () {
                     .on("start", repeat);
             });
     });
-}
-buttonTank.onclick = function () {
     var bat = d3.select("svg.tank")
-    var p = bat.select("path")
-    var dTank = p.attr("d");
+    var pTank = bat.select("path")
+    var dTank = pTank.attr("d");
 
     d3.xml("svg/battery.svg").mimeType("image/svg+xml").get(function (error, xml) {
         var child = xml.documentElement;
 
-        var p1 = d3.select(child).select("path");
-        var dBattery = p1.attr("d")
+        var pBattery = d3.select(child).select("path");
+        var dBattery = pBattery.attr("d")
 
-        p.transition().duration(2000)
+        pTank.transition().duration(2000)
             .on("start", function repeat() {
                 d3.active(this)
                     .attrTween("d", pathTween(dBattery, 1, 0.8))

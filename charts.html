@@ -96,17 +96,20 @@
                         <div class="row">
                             <div class="text-center col-1">
                                 <div id="tab" class="btn-group-vertical btn-group-toggle" data-toggle="buttons">
-                                    <label class="btn btn-secondary active">
-                                        <input type="radio" name="options" id="electric" autocomplete="off" checked>
-                                        Electric
-                                    </label>
-                                    <label class="btn btn-secondary">
-                                        <input type="radio" name="options" id="option2" autocomplete="off">
-                                        Combustion powered
-                                    </label>
-                                    <label class="btn btn-secondary">
-                                        <input type="radio" name="options" id="option3" autocomplete="off"> Loop
-                                    </label>
+                                    <button type="button" class="btn btn-secondary">Electric</button>
+                                    <button type="button" class="btn btn-secondary">Combustion powered</button>
+                                    <button type="button" class="btn btn-secondary" id="loop">Loop</button>
+                                    <!--<label class="btn btn-secondary active">-->
+                                        <!--<input type="button" name="options" id="electric" autocomplete="off" checked>-->
+                                        <!--Electric-->
+                                    <!--</label>-->
+                                    <!--<label class="btn btn-secondary">-->
+                                        <!--<input type="button" name="options" id="option2" autocomplete="off">-->
+                                        <!--Combustion powered-->
+                                    <!--</label>-->
+                                    <!--<label class="btn btn-secondary">-->
+                                        <!--<input type="button" name="options" id="loop" autocomplete="off"> Loop-->
+                                    <!--</label>-->
                                 </div>
                             </div>
                             <div class="text-center col-10">
@@ -197,21 +200,6 @@
 <script src="js/chart-car-autopsy.js"></script>
 <!--<script src="js/demo/chart-area-demo.js"></script>-->
 
-<script>
-    var rad = document.getElementById("toggle_radio_container").getElementsByTagName("input");
-    console.log(rad)
-    var prev = null;
-    for (var i = 0; i < rad.length; i++) {
-        rad[i].onclick = function () {
-            (prev) ? console.log(prev.id) : null;
-            if (this !== prev) {
-                prev = this;
-            }
-            console.log(this.id)
-        };
-    }
-    console.log("Listeners Added")
-</script>
 
 
 </body>
