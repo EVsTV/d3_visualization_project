@@ -1,4 +1,5 @@
 var ctx = document.getElementById("myAreaChart");
+<<<<<<< HEAD
 var TV;
 var EV;
 var activeData;
@@ -78,7 +79,7 @@ combustionButton.onclick = function () {
     pNozzle.transition().duration(2000)
         .on("start", function repeat() {
             d3.active(this)
-                .attrTween("d", pathTween(dPlug, 1, 0.8))
+                .attrTween("d", pathTween(dNozzle, 1, 0.8))
                 .attr("transform", "translate(0,0)")
                 .style("fill", "brown")
                 .transition()
@@ -112,7 +113,7 @@ electricButton.onclick = function () {
     pNozzle.transition().duration(2000)
         .on("start", function repeat() {
             d3.active(this)
-                .attrTween("d", pathTween(dNozzle, 1, 0.8))
+                .attrTween("d", pathTween(dPlug, 1, 0.8))
                 .attr("transform", "translate(0,0)")
                 .style("fill", "yellow")
                 .transition()
@@ -130,78 +131,79 @@ electricButton.onclick = function () {
         });
 }
 
+d3.xml("svg/elecEngine.svg").mimeType("image/svg+xml").get(function (error, xml) {
+    var child = xml.documentElement;
+
+    pEngineElectric = d3.select(child).select("path");
+    dEngineElectric = pEngineElectric.attr("d")
+});
+d3.xml("svg/plug.svg").mimeType("image/svg+xml").get(function (error, xml) {
+    var child = xml.documentElement;
+
+    pPlug = d3.select(child).select("path");
+    dPlug = pPlug.attr("d")
+});
+d3.xml("svg/battery.svg").mimeType("image/svg+xml").get(function (error, xml) {
+    var child = xml.documentElement;
+
+    pBattery = d3.select(child).select("path");
+    dBattery = pBattery.attr("d")
+});
+
+
 loopButton.onclick = function () {
     console.log("loop clicked")
     var bat = d3.select("svg.engine")
     var pEngineTherm = bat.select("path")
     dEngineTherm = pEngineTherm.attr("d");
 
-    d3.xml("svg/elecEngine.svg").mimeType("image/svg+xml").get(function (error, xml) {
-        var child = xml.documentElement;
 
-        pEngineElectric = d3.select(child).select("path");
-        dEngineElectric = pEngineElectric.attr("d")
-
-        pEngineTherm.transition().duration(2000)
-            .on("start", function repeat() {
-                d3.active(this)
-                    .attrTween("d", pathTween(dEngineElectric, 1, 0.8))
-                    .attr("transform", "translate(0,0)")
-                    .style("fill", "yellow")
-                    .transition()
-                    .attrTween("d", pathTween(dEngineTherm, 1, 1))
-                    .style("fill", "brown")
-                    .transition()
-                    .on("start", repeat);
-            });
-    });
+    pEngineTherm.transition().duration(2000)
+        .on("start", function repeat() {
+            d3.active(this)
+                .attrTween("d", pathTween(dEngineElectric, 1, 0.8))
+                .attr("transform", "translate(0,0)")
+                .style("fill", "yellow")
+                .transition()
+                .attrTween("d", pathTween(dEngineTherm, 1, 1))
+                .style("fill", "brown")
+                .transition()
+                .on("start", repeat);
+        });
 
     var bat = d3.select("svg.nozzle")
     var pNozzle = bat.select("path")
     dNozzle = pNozzle.attr("d");
 
-    d3.xml("svg/plug.svg").mimeType("image/svg+xml").get(function (error, xml) {
-        var child = xml.documentElement;
 
-        pPlug = d3.select(child).select("path");
-        dPlug = pPlug.attr("d")
-
-        pNozzle.transition().duration(2000)
-            .on("start", function repeat() {
-                d3.active(this)
-                    .attrTween("d", pathTween(dPlug, 1, 0.8))
-                    .attr("transform", "translate(0,0)")
-                    .style("fill", "yellow")
-                    .transition()
-                    .attrTween("d", pathTween(dNozzle, 1, 1))
-                    .style("fill", "brown")
-                    .transition()
-                    .on("start", repeat);
-            });
-    });
+    pNozzle.transition().duration(2000)
+        .on("start", function repeat() {
+            d3.active(this)
+                .attrTween("d", pathTween(dPlug, 1, 0.8))
+                .attr("transform", "translate(0,0)")
+                .style("fill", "yellow")
+                .transition()
+                .attrTween("d", pathTween(dNozzle, 1, 1))
+                .style("fill", "brown")
+                .transition()
+                .on("start", repeat);
+        });
     var bat = d3.select("svg.tank")
     var pTank = bat.select("path")
     dTank = pTank.attr("d");
 
-    d3.xml("svg/battery.svg").mimeType("image/svg+xml").get(function (error, xml) {
-        var child = xml.documentElement;
-
-        pBattery = d3.select(child).select("path");
-        dBattery = pBattery.attr("d")
-
-        pTank.transition().duration(2000)
-            .on("start", function repeat() {
-                d3.active(this)
-                    .attrTween("d", pathTween(dBattery, 1, 0.8))
-                    .attr("transform", "translate(0,0)")
-                    .style("fill", "yellow")
-                    .transition()
-                    .attrTween("d", pathTween(dTank, 1, 1))
-                    .style("fill", "brown")
-                    .transition()
-                    .on("start", repeat);
-            });
-    });
+    pTank.transition().duration(2000)
+        .on("start", function repeat() {
+            d3.active(this)
+                .attrTween("d", pathTween(dBattery, 1, 0.8))
+                .attr("transform", "translate(0,0)")
+                .style("fill", "yellow")
+                .transition()
+                .attrTween("d", pathTween(dTank, 1, 1))
+                .style("fill", "brown")
+                .transition()
+                .on("start", repeat);
+        });
 }
 
 function pathTween(d1, precision, scale) {
@@ -230,6 +232,7 @@ function pathTween(d1, precision, scale) {
         };
     };
 }
+
 
 function getActiveData()
 {
@@ -270,3 +273,14 @@ function getScaler(data, selected)
 		.range([10, 60]);		
 	return scaler;
 }	
+
+
+/*$(function () {
+    $(document).on('change', 'input:radio', function (event) {
+        if ($(this).is(':checked')) {
+            dataType = event.target["value"]
+        }
+    });
+});
+
+*/
