@@ -25,12 +25,10 @@
             p.transition().duration(1000)
                 .on("start", function repeat() {
                     d3.active(this)
-                        .attrTween("d", pathTween(d1, 1, 1.5))
-                        .attr("transform", "translate(20,15)")
+                        .attrTween("d", pathTween(d1, 1, 1))
                         .attr("color", "yellow")
                         .transition()
-                        .attrTween("d", pathTween(d0, 1, 2/3))
-                        .attr("transform", "translate(30,20)")
+                        .attrTween("d", pathTween(d0, 1, 1))
                         .transition()
                         .on("start", repeat);
                 });
