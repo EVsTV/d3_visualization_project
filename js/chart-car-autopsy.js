@@ -1,5 +1,4 @@
 var ctx = document.getElementById("myAreaChart");
-<<<<<<< HEAD
 var TV;
 var EV;
 var activeData;
@@ -9,7 +8,7 @@ d3.json("./TV.json", function(data){
 	d3.json("./EV.json", function(dataEV){
 		EV = dataEV
 		activeData = getActiveData()
-		var scaler = getScaler(, "Energy (MJ)")
+		var scaler = getScaler(activeData, "Energy (MJ)")
 		console.log(scaler(EV["Data"]["Values"][0]["Values"][0]))
 		console.log(scaler(EV["Data"]["Values"][0]["Values"][0]) / (scaler.range()[1] - scaler.range()[0]))
 		d3.xml("svg/car-frame-svg.svg").mimeType("image/svg+xml").get(function (error, xml) {
@@ -275,12 +274,11 @@ function getScaler(data, selected)
 }	
 
 
-/*$(function () {
+$(function () {
     $(document).on('change', 'input:radio', function (event) {
         if ($(this).is(':checked')) {
-            dataType = event.target["value"]
+            activeData = getActiveData()
         }
     });
 });
 
-*/
