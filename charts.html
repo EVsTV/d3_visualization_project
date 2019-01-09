@@ -17,7 +17,8 @@
 
 <body>
 
-<input type="button" value="test" id="button">
+<input type="button" value="test tank" id="buttonTank">
+<input type="button" value="test nozzle" id="buttonNozzle">
 
 <script>
 
@@ -35,7 +36,8 @@
         var dim = car.node().getBBox();
         var tank = loadComponentIntoCar("svg/tank.svg", "tank", "45", "40", car, dim.width - 40, 30);
         var engine = loadComponentIntoCar("svg/engine.svg", "engine", "40", "40", car, 30, 30);
-        var engine = loadComponentIntoCar("svg/plug.svg", "plug", "20", "10", car, dim.width - 15, 60);
+        var nozzle = loadComponentIntoCar("svg/nozzle.svg", "nozzle", "20", "10", car, dim.width - 15, 25);
+//        var plug = loadComponentIntoCar("svg/plug.svg", "plug", "20", "10", car, dim.width - 15, 60);
 
     });
 
@@ -55,9 +57,35 @@
         });
     }
 
-    var button = document.getElementById("button")
+    var buttonTank = document.getElementById("buttonTank")
+    var buttonNozzle = document.getElementById("buttonNozzle")
 
-    button.onclick = function () {
+    buttonNozzle.onclick = function () {
+        var bat = d3.select("svg.nozzle")
+        var p = bat.select("path")
+        d0 = p.attr("d");
+
+        d3.xml("svg/plug.svg").mimeType("image/svg+xml").get(function (error, xml) {
+            var child = xml.documentElement;
+
+            var p1 = d3.select(child).select("path");
+            d1 = p1.attr("d")
+
+            p.transition().duration(2000)
+                .on("start", function repeat() {
+                    d3.active(this)
+                        .attrTween("d", pathTween(d1, 1, 0.8))
+                        .attr("transform", "translate(0,0)")
+                        .style("fill", "yellow")
+                        .transition()
+                        .attrTween("d", pathTween(d0, 1, 1))
+                        .style("fill", "brown")
+                        .transition()
+                        .on("start", repeat);
+                });
+        });
+    }
+    buttonTank.onclick = function () {
         var bat = d3.select("svg.tank")
         var p = bat.select("path")
         d0 = p.attr("d");
