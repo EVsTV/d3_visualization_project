@@ -96,35 +96,35 @@
                         <div class="row">
                             <div class="text-center col-1">
                                 <div id="tab" class="btn-group-vertical btn-group-toggle" data-toggle="buttons">
-                                    <button type="button" class="btn btn-secondary" id="electric">Electric</button>
-                                    <button type="button" class="btn btn-secondary" id="combustion">Combustion powered</button>
-                                    <button type="button" class="btn btn-secondary" id="loop">Loop</button>
-                                    <!--<label class="btn btn-secondary active">-->
-                                        <!--<input type="button" name="options" id="electric" autocomplete="off" checked>-->
-                                        <!--Electric-->
-                                    <!--</label>-->
-                                    <!--<label class="btn btn-secondary">-->
-                                        <!--<input type="button" name="options" id="option2" autocomplete="off">-->
-                                        <!--Combustion powered-->
-                                    <!--</label>-->
-                                    <!--<label class="btn btn-secondary">-->
-                                        <!--<input type="button" name="options" id="loop" autocomplete="off"> Loop-->
-                                    <!--</label>-->
+                                    <!--<button type="button" class="btn btn-secondary" id="electric">Electric</button>-->
+                                    <!--<button type="button" class="btn btn-secondary active" id="combustion">Combustion powered</button>-->
+                                    <!--<button type="button" class="btn btn-secondary" id="loop">Loop</button>-->
+                                    <label class="btn btn-secondary">
+                                        <input type="radio" name="car-type" id="electric" autocomplete="off" value="electric">
+                                        Electric
+                                    </label>
+                                    <label class="btn btn-secondary active">
+                                        <input type="radio" name="car-type" id="combustion" autocomplete="off" checked value="combustion">
+                                        Combustion powered
+                                    </label>
+                                    <label class="btn btn-secondary">
+                                        <input type="radio" name="car-type" id="loop" autocomplete="off" value="loop"> Loop
+                                    </label>
                                 </div>
                             </div>
                             <div class="text-center col-10">
                                 <div id="type-chooser-container" class="btn-group btn-group-toggle flex-wrap"
                                      data-toggle="buttons">
                                     <label class="btn btn-secondary active">
-                                        <input type="radio" name="options" id="energy" autocomplete="off" value="Energy (MJ)" checked>
+                                        <input type="radio" name="category" id="energy" autocomplete="off" value="Energy (MJ)" checked>
                                         Energy (MJ)
                                     </label>
                                     <label class="btn btn-secondary">
-                                        <input type="radio" name="options" id="pollution" autocomplete="off" value="Photochemical pollution (O3)">
+                                        <input type="radio" name="category" id="pollution" autocomplete="off" value="Photochemical pollution (O3)">
                                         Photochemical pollution (O3)
                                     </label>
                                     <label class="btn btn-secondary">
-                                        <input type="radio" name="options" id="climate-change" autocomplete="off" value="Climatic Change (CO2)">
+                                        <input type="radio" name="category" id="climate-change" autocomplete="off" value="Climatic Change (CO2)">
                                         Climatic Change (CO2)
                                     </label>
                                 </div>
