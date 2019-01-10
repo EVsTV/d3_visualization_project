@@ -2,15 +2,16 @@ var ctx = document.getElementById("myAreaChart");
 var TV;
 var EV;
 var activeData;
+var scaler
 d3.json("./TV.json", function(data){
 	TV = data
 
 	d3.json("./EV.json", function(dataEV){
 		EV = dataEV
 		activeData = getActiveData()
-		var scaler = getScaler(activeData, "Energy (MJ)")
-		console.log(scaler(EV["Data"]["Values"][0]["Values"][0]))
-		console.log(scaler(EV["Data"]["Values"][0]["Values"][0]) / (scaler.range()[1] - scaler.range()[0]))
+		scaler = getScaler(activeData, "Energy (MJ)")
+		
+		console.log(scaler(activeData[0]["Data"]["Values"][0]["Values"][0]) / scaler(activeData[1]["Data"]["Values"][0]["Values"][0]))
 		d3.xml("svg/car-frame-svg.svg").mimeType("image/svg+xml").get(function (error, xml) {
 			if (error) throw error;
 			var child = xml.documentElement;
@@ -22,9 +23,9 @@ d3.json("./TV.json", function(data){
 
 			//Set default visualisation with : TV and Energy (MJ)
 			var dim = car.node().getBBox();
-			var tank = loadComponentIntoCar("svg/tank.svg", "tank", scaler(EV["Data"]["Values"][0]["Values"][0]), scaler(EV["Data"]["Values"][0]["Values"][0]), car, dim.width - 40, 30);	
-			var engine = loadComponentIntoCar("svg/thermEngine.svg", "engine", scaler(EV["Data"]["Values"][0]["Values"][1]) , scaler(EV["Data"]["Values"][0]["Values"][1]), car, 30, 30);
-			var nozzle = loadComponentIntoCar("svg/nozzle.svg", "nozzle", scaler(EV["Data"]["Values"][0]["Values"][3]), scaler(EV["Data"]["Values"][0]["Values"][3]), car, dim.width - 15, 25);
+			var tank = loadComponentIntoCar("svg/tank.svg", "tank", scaler(activeData[1]["Data"]["Values"][0]["Values"][0]), scaler(activeData[1]["Data"]["Values"][0]["Values"][0]), car, dim.width - 40, 30);	
+			var engine = loadComponentIntoCar("svg/thermEngine.svg", "engine", scaler(activeData[1]["Data"]["Values"][0]["Values"][1]) , scaler(activeData[1]["Data"]["Values"][0]["Values"][1]), car, 30, 30);
+			var nozzle = loadComponentIntoCar("svg/nozzle.svg", "nozzle", scaler(activeData[1]["Data"]["Values"][0]["Values"][3]), scaler(activeData[1]["Data"]["Values"][0]["Values"][3]), car, dim.width - 15, 25);
 
 		});
 	});
@@ -156,15 +157,16 @@ loopButton.onclick = function () {
     var pEngineTherm = bat.select("path")
     dEngineTherm = pEngineTherm.attr("d");
 
-
+	ratioTVEV = scaler(activeData[0]["Data"]["Values"][0]["Values"][0]) / scaler(activeData[1]["Data"]["Values"][0]["Values"][0]);
+	ratioEVTV = scaler(activeData[1]["Data"]["Values"][0]["Values"][0]) / scaler(activeData[0]["Data"]["Values"][0]["Values"][0])
     pEngineTherm.transition().duration(2000)
         .on("start", function repeat() {
             d3.active(this)
-                .attrTween("d", pathTween(dEngineElectric, 1, 0.8))
+                .attrTween("d", pathTween(dEngineElectric, 1, ratioTVEV))
                 .attr("transform", "translate(0,0)")
                 .style("fill", "yellow")
                 .transition()
-                .attrTween("d", pathTween(dEngineTherm, 1, 1))
+                .attrTween("d", pathTween(dEngineTherm, 1, ratioEVTV))
                 .style("fill", "brown")
                 .transition()
                 .on("start", repeat);
@@ -178,11 +180,11 @@ loopButton.onclick = function () {
     pNozzle.transition().duration(2000)
         .on("start", function repeat() {
             d3.active(this)
-                .attrTween("d", pathTween(dPlug, 1, 0.8))
+                .attrTween("d", pathTween(dPlug, 1, ratioTVEV))
                 .attr("transform", "translate(0,0)")
                 .style("fill", "yellow")
                 .transition()
-                .attrTween("d", pathTween(dNozzle, 1, 1))
+                .attrTween("d", pathTween(dNozzle, 1, ratioEVTV))
                 .style("fill", "brown")
                 .transition()
                 .on("start", repeat);
@@ -194,11 +196,11 @@ loopButton.onclick = function () {
     pTank.transition().duration(2000)
         .on("start", function repeat() {
             d3.active(this)
-                .attrTween("d", pathTween(dBattery, 1, 0.8))
+                .attrTween("d", pathTween(dBattery, 1, ratioTVEV))
                 .attr("transform", "translate(0,0)")
                 .style("fill", "yellow")
                 .transition()
-                .attrTween("d", pathTween(dTank, 1, 1))
+                .attrTween("d", pathTween(dTank, 1, ratioEVTV))
                 .style("fill", "brown")
                 .transition()
                 .on("start", repeat);
@@ -232,7 +234,9 @@ function pathTween(d1, precision, scale) {
     };
 }
 
-
+//Keep only the useful part of data (EV and TV) depending on the selected value type
+//EV index 0
+//TV index 1
 function getActiveData()
 {
 	if(buttonEnergy.checked == true)
@@ -256,6 +260,7 @@ function getActiveData()
 	return data
 }
 
+//Return a scaler for given data
 function getScaler(data, selected)
 {		
 	var scaler = d3.scaleLinear().domain([d3.min(data, function(data){
@@ -278,6 +283,8 @@ $(function () {
     $(document).on('change', 'input:radio', function (event) {
         if ($(this).is(':checked')) {
             activeData = getActiveData()
+			scaler = getScaler(activeData, event.target["value"])
+			//TO-DO : Update size of components
         }
     });
 });
