@@ -2,7 +2,9 @@ var ctx = document.getElementById("myAreaChart");
 var TV;
 var EV;
 var activeData;
-var scaler
+var scaler;
+var state;
+
 d3.json("./TV.json", function(data){
 	TV = data
 
@@ -10,8 +12,7 @@ d3.json("./TV.json", function(data){
 		EV = dataEV
 		activeData = getActiveData()
 		scaler = getScaler(activeData, "Energy (MJ)")
-		
-		console.log(scaler(activeData[0]["Data"]["Values"][0]["Values"][0]) / scaler(activeData[1]["Data"]["Values"][0]["Values"][0]))
+				
 		d3.xml("svg/car-frame-svg.svg").mimeType("image/svg+xml").get(function (error, xml) {
 			if (error) throw error;
 			var child = xml.documentElement;
@@ -23,10 +24,15 @@ d3.json("./TV.json", function(data){
 
 			//Set default visualisation with : TV and Energy (MJ)
 			var dim = car.node().getBBox();
-			var tank = loadComponentIntoCar("svg/tank.svg", "tank", scaler(activeData[1]["Data"]["Values"][0]["Values"][0]), scaler(activeData[1]["Data"]["Values"][0]["Values"][0]), car, dim.width - 40, 30);	
-			var engine = loadComponentIntoCar("svg/thermEngine.svg", "engine", scaler(activeData[1]["Data"]["Values"][0]["Values"][1]) , scaler(activeData[1]["Data"]["Values"][0]["Values"][1]), car, 30, 30);
-			var nozzle = loadComponentIntoCar("svg/nozzle.svg", "nozzle", scaler(activeData[1]["Data"]["Values"][0]["Values"][3]), scaler(activeData[1]["Data"]["Values"][0]["Values"][3]), car, dim.width - 15, 25);
-
+			var tank = loadComponentIntoCar("svg/tank.svg", "tank", scaler(activeData[1]["Data"]["Values"][0]["Values"][1]), scaler(activeData[1]["Data"]["Values"][0]["Values"][1]), car, dim.width - 40, 30);	
+			var engine = loadComponentIntoCar("svg/thermEngine.svg", "engine", scaler(activeData[1]["Data"]["Values"][0]["Values"][0]) , scaler(activeData[1]["Data"]["Values"][0]["Values"][0]), car, 30, 30);
+			var nozzle = loadComponentIntoCar("svg/nozzle.svg", "nozzle", scaler(activeData[1]["Data"]["Values"][0]["Values"][3]), scaler(activeData[1]["Data"]["Values"][0]["Values"][3]), car, dim.width - 20, 30);
+/*
+			var tank = loadComponentIntoCar("svg/tank.svg", "tank", "40", "30", car, dim.width - 40, 30);	
+			var engine = loadComponentIntoCar("svg/thermEngine.svg", "engine", "30" , "30", car, 30, 30);
+			var nozzle = loadComponentIntoCar("svg/nozzle.svg", "nozzle", "25", "25", car, dim.width - 10, 25);
+*/
+			state = "TV";
 		});
 	});
 });	
@@ -63,72 +69,85 @@ var electricButton = document.getElementById("electric")
 var combustionButton = document.getElementById("combustion")
 
 combustionButton.onclick = function () {
-    var bat = d3.select("svg.engine")
-    var pEngineTherm = bat.select("path")
-    pEngineTherm.transition().duration(2000)
-        .on("start", function repeat() {
-            d3.active(this)
-                .attrTween("d", pathTween(dEngineTherm, 1, 0.8))
-                .attr("transform", "translate(0,0)")
-                .style("fill", "brown")
-                .transition()
-        });
+	if(state != "TV")
+	{
+		state = "TV";
+		var bat = d3.select("svg.engine")
+		var pEngineTherm = bat.select("path")
+		pEngineTherm.transition().duration(2000)
+			.on("start", function repeat() {
+				d3.active(this)
+					.attrTween("d", pathTween(dEngineTherm, 1, scaler(activeData[1]["Data"]["Values"][0]["Values"][0]) / scaler(activeData[0]["Data"]["Values"][0]["Values"][0])))
+					.attr("transform", "translate(0,0)")
+					.style("fill", "brown")
+					.transition()
+			});
 
-    var bat = d3.select("svg.nozzle")
-    var pNozzle = bat.select("path")
-    pNozzle.transition().duration(2000)
-        .on("start", function repeat() {
-            d3.active(this)
-                .attrTween("d", pathTween(dNozzle, 1, 0.8))
-                .attr("transform", "translate(0,0)")
-                .style("fill", "brown")
-                .transition()
-        });
-    var bat = d3.select("svg.tank")
-    var pTank = bat.select("path")
-
-    pTank.transition().duration(2000)
-        .on("start", function repeat() {
-            d3.active(this)
-                .attrTween("d", pathTween(dTank, 1, 0.8))
-                .attr("transform", "translate(0,0)")
-                .style("fill", "brown")
-                .transition()
-        });
+		var bat = d3.select("svg.nozzle");
+		var pNozzle = bat.select("path");
+		console.log(scaler(activeData[1]["Data"]["Values"][0]["Values"][3]) / scaler(activeData[0]["Data"]["Values"][0]["Values"][3]));
+		pNozzle.transition().duration(2000)
+			.on("start", function repeat() {
+				d3.active(this)
+					.attrTween("d", pathTween(dNozzle, 1, scaler(activeData[1]["Data"]["Values"][0]["Values"][3]) / scaler(activeData[0]["Data"]["Values"][0]["Values"][3])))
+					.attr("transform", "translate(0,0)")
+					.style("fill", "brown")
+					.transition()
+			});
+		var bat = d3.select("svg.tank")
+		var pTank = bat.select("path")
+		pTank.transition().duration(2000)
+			.on("start", function repeat() {
+				d3.active(this)
+					.attrTween("d", pathTween(dTank, 1, scaler(activeData[1]["Data"]["Values"][0]["Values"][1]) / scaler(activeData[0]["Data"]["Values"][0]["Values"][1])))
+					.attr("transform", "translate(0,0)")
+					.style("fill", "brown")
+					.transition()
+			});
+	}
 }
 electricButton.onclick = function () {
-    var bat = d3.select("svg.engine")
-    var pEngineTherm = bat.select("path")
-    pEngineTherm.transition().duration(2000)
-        .on("start", function repeat() {
-            d3.active(this)
-                .attrTween("d", pathTween(dEngineElectric, 1, 0.8))
-                .attr("transform", "translate(0,0)")
-                .style("fill", "yellow")
-                .transition()
-        });
+	if(state != "EV")
+	{
+		state = "EV";
+		
+		var bat = d3.select("svg.engine")
+		
+		var pEngineTherm = bat.select("path")
+		pEngineTherm.transition().duration(2000)
+			.on("start", function repeat() {
+				d3.active(this)
+					.attrTween("d", pathTween(dEngineElectric, 1, scaler(activeData[0]["Data"]["Values"][0]["Values"][0]) / scaler(activeData[1]["Data"]["Values"][0]["Values"][0])))
+					.attr("transform", "translate(0,0)")
+					.style("fill", "yellow")
+					.transition()
+			});
 
-    var bat = d3.select("svg.nozzle")
-    var pNozzle = bat.select("path")
-    pNozzle.transition().duration(2000)
-        .on("start", function repeat() {
-            d3.active(this)
-                .attrTween("d", pathTween(dPlug, 1, 0.8))
-                .attr("transform", "translate(0,0)")
-                .style("fill", "yellow")
-                .transition()
-        });
-    var bat = d3.select("svg.tank")
-    var pTank = bat.select("path")
+		var bat = d3.select("svg.nozzle")
+		
+		var pNozzle = bat.select("path")
+		
+		pNozzle.transition().duration(2000)
+			.on("start", function repeat() {
+				d3.active(this)
+					.attrTween("d", pathTween(dPlug, 1, scaler(activeData[0]["Data"]["Values"][0]["Values"][3]) / scaler(activeData[1]["Data"]["Values"][0]["Values"][3])))
+					.attr("transform", "translate(0,0)")
+					.style("fill", "yellow")
+					.transition()
+			});
+		var bat = d3.select("svg.tank")
+		
+		var pTank = bat.select("path")
 
-    pTank.transition().duration(2000)
-        .on("start", function repeat() {
-            d3.active(this)
-                .attrTween("d", pathTween(dBattery, 1, 0.8))
-                .attr("transform", "translate(0,0)")
-                .style("fill", "yellow")
-                .transition()
-        });
+		pTank.transition().duration(2000)
+			.on("start", function repeat() {
+				d3.active(this)
+					.attrTween("d", pathTween(dBattery, 1, scaler(activeData[0]["Data"]["Values"][0]["Values"][1]) / scaler(activeData[1]["Data"]["Values"][0]["Values"][1])))
+					.attr("transform", "translate(0,0)")
+					.style("fill", "yellow")
+					.transition()
+			});
+	}
 }
 
 d3.xml("svg/elecEngine.svg").mimeType("image/svg+xml").get(function (error, xml) {
@@ -157,16 +176,18 @@ loopButton.onclick = function () {
     var pEngineTherm = bat.select("path")
     dEngineTherm = pEngineTherm.attr("d");
 
-	ratioTVEV = scaler(activeData[0]["Data"]["Values"][0]["Values"][0]) / scaler(activeData[1]["Data"]["Values"][0]["Values"][0]);
-	ratioEVTV = scaler(activeData[1]["Data"]["Values"][0]["Values"][0]) / scaler(activeData[0]["Data"]["Values"][0]["Values"][0])
+
+	
     pEngineTherm.transition().duration(2000)
         .on("start", function repeat() {
-            d3.active(this)
-                .attrTween("d", pathTween(dEngineElectric, 1, ratioTVEV))
+			state = "EV";
+            var tmp = d3.active(this)
+                .attrTween("d", pathTween(dEngineElectric, 1, scaler(activeData[0]["Data"]["Values"][0]["Values"][0]) / scaler(activeData[1]["Data"]["Values"][0]["Values"][0])))
                 .attr("transform", "translate(0,0)")
                 .style("fill", "yellow")
                 .transition()
-                .attrTween("d", pathTween(dEngineTherm, 1, ratioEVTV))
+			state = "TV";
+			tmp.attrTween("d", pathTween(dEngineTherm, 1, scaler(activeData[1]["Data"]["Values"][0]["Values"][0]) / scaler(activeData[0]["Data"]["Values"][0]["Values"][0])))
                 .style("fill", "brown")
                 .transition()
                 .on("start", repeat);
@@ -175,16 +196,14 @@ loopButton.onclick = function () {
     var bat = d3.select("svg.nozzle")
     var pNozzle = bat.select("path")
     dNozzle = pNozzle.attr("d");
-
-
     pNozzle.transition().duration(2000)
         .on("start", function repeat() {
             d3.active(this)
-                .attrTween("d", pathTween(dPlug, 1, ratioTVEV))
+                .attrTween("d", pathTween(dPlug, 1, scaler(activeData[0]["Data"]["Values"][0]["Values"][3]) / scaler(activeData[1]["Data"]["Values"][0]["Values"][3])))
                 .attr("transform", "translate(0,0)")
                 .style("fill", "yellow")
                 .transition()
-                .attrTween("d", pathTween(dNozzle, 1, ratioEVTV))
+                .attrTween("d", pathTween(dNozzle, 1, scaler(activeData[1]["Data"]["Values"][0]["Values"][3]) / scaler(activeData[0]["Data"]["Values"][0]["Values"][3])))
                 .style("fill", "brown")
                 .transition()
                 .on("start", repeat);
@@ -196,11 +215,11 @@ loopButton.onclick = function () {
     pTank.transition().duration(2000)
         .on("start", function repeat() {
             d3.active(this)
-                .attrTween("d", pathTween(dBattery, 1, ratioTVEV))
+                .attrTween("d", pathTween(dBattery, 1, scaler(activeData[0]["Data"]["Values"][0]["Values"][1]) / scaler(activeData[1]["Data"]["Values"][0]["Values"][1])))
                 .attr("transform", "translate(0,0)")
                 .style("fill", "yellow")
                 .transition()
-                .attrTween("d", pathTween(dTank, 1, ratioEVTV))
+                .attrTween("d", pathTween(dTank, 1, scaler(activeData[1]["Data"]["Values"][0]["Values"][1]) / scaler(activeData[0]["Data"]["Values"][0]["Values"][1])))
                 .style("fill", "brown")
                 .transition()
                 .on("start", repeat);
@@ -241,19 +260,19 @@ function getActiveData()
 {
 	if(buttonEnergy.checked == true)
 	{
-		var data = [EV, TV]
+		var data = [JSON.parse(JSON.stringify(EV)), JSON.parse(JSON.stringify(TV))]
 		data[0]["Data"]["Values"] = [data[0]["Data"]["Values"][0]]
 		data[1]["Data"]["Values"] = [data[1]["Data"]["Values"][0]]
 	}
 	if(buttonPhoto.checked == true)
 	{
-		var data = [EV, TV]
+		var data = [JSON.parse(JSON.stringify(EV)), JSON.parse(JSON.stringify(TV))]
 		data[0]["Data"]["Values"] = [data[0]["Data"]["Values"][1]]
 		data[1]["Data"]["Values"] = [data[1]["Data"]["Values"][1]]		
 	}
 	if(buttonCO2.checked == true)
 	{
-		var data = [EV, TV]
+		var data = [JSON.parse(JSON.stringify(EV)), JSON.parse(JSON.stringify(TV))]
 		data[0]["Data"]["Values"] = [data[0]["Data"]["Values"][2]]
 		data[1]["Data"]["Values"] = [data[1]["Data"]["Values"][2]]		
 	}
@@ -282,9 +301,94 @@ function getScaler(data, selected)
 $(function () {
     $(document).on('change', 'input:radio', function (event) {
         if ($(this).is(':checked')) {
-            activeData = getActiveData()
-			scaler = getScaler(activeData, event.target["value"])
-			//TO-DO : Update size of components
+            if(state == "EV"){
+				var tmpE = scaler(activeData[0]["Data"]["Values"][0]["Values"][0])
+				var tmpN = scaler(activeData[0]["Data"]["Values"][0]["Values"][3])
+				var tmpT = scaler(activeData[0]["Data"]["Values"][0]["Values"][1])
+				activeData = getActiveData()
+				scaler = getScaler(activeData, event.target["value"])
+				
+				var bat = d3.select("svg.engine")
+		
+				var pEngineTherm = bat.select("path")
+				
+				pEngineTherm.transition().duration(2000)
+					.on("start", function repeat() {
+						d3.active(this)
+							.attrTween("d", pathTween(dEngineElectric, 1, tmpE / scaler(activeData[1]["Data"]["Values"][0]["Values"][0])))
+							.attr("transform", "translate(0,0)")
+							.transition()
+					});
+
+				var bat = d3.select("svg.nozzle")
+				
+				var pNozzle = bat.select("path")
+				pNozzle.transition().duration(2000)
+					.on("start", function repeat() {
+						d3.active(this)
+							.attrTween("d", pathTween(dPlug, 1, tmpN / scaler(activeData[1]["Data"]["Values"][0]["Values"][3])))
+							.attr("transform", "translate(0,0)")
+							.transition()
+					});
+				var bat = d3.select("svg.tank")
+				
+				var pTank = bat.select("path")
+
+				pTank.transition().duration(2000)
+					.on("start", function repeat() {
+						d3.active(this)
+							.attrTween("d", pathTween(dBattery, 1, tmpT / scaler(activeData[1]["Data"]["Values"][0]["Values"][1])))
+							.attr("transform", "translate(0,0)")
+							.transition()
+					});
+				
+			}
+			else{
+				var tmpE = scaler(activeData[1]["Data"]["Values"][0]["Values"][0])
+				var tmpN = scaler(activeData[1]["Data"]["Values"][0]["Values"][3])
+				var tmpT = scaler(activeData[1]["Data"]["Values"][0]["Values"][1])				
+				activeData = getActiveData()
+				scaler = getScaler(activeData, event.target["value"])
+				
+				var bat = d3.select("svg.engine")
+		
+				var pEngineTherm = bat.select("path")
+				dEngineTherm = pEngineTherm.attr("d");
+				pEngineTherm.transition().duration(2000)
+					.on("start", function repeat() {
+						d3.active(this)
+							.attrTween("d", pathTween(dEngineTherm, 1, tmpE / scaler(activeData[1]["Data"]["Values"][0]["Values"][0])))
+							.attr("transform", "translate(0,0)")
+							.transition()
+					});
+
+				var bat = d3.select("svg.nozzle")
+				
+				var pNozzle = bat.select("path")
+				dNozzle = pNozzle.attr("d");
+				pNozzle.transition().duration(2000)
+					.on("start", function repeat() {
+						d3.active(this)
+							.attrTween("d", pathTween(dNozzle, 1, tmpN / scaler(activeData[1]["Data"]["Values"][0]["Values"][3])))
+							.attr("transform", "translate(0,0)")
+							.transition()
+					});
+				var bat = d3.select("svg.tank")
+				
+				var pTank = bat.select("path")
+					dTank = pTank.attr("d");
+				pTank.transition().duration(2000)
+					.on("start", function repeat() {
+						d3.active(this)
+							.attrTween("d", pathTween(dTank, 1, tmpT / scaler(activeData[1]["Data"]["Values"][0]["Values"][1])))
+							.attr("transform", "translate(0,0)")
+							.transition()
+					});
+				
+			}
+			
+			
+
         }
     });
 });
