@@ -1,0 +1,21 @@
+{
+"Type": "Thermic Vehicle",
+"Data" : 	
+	{
+	"Labels" : ["Components", "Battery", "Assembly", "Fueling"],
+	"Values" : [
+		{
+		"Title" : "Energy (MJ)",
+		"Values" :  [60000, 0, 10000, 270000]
+		}, 
+		{
+		"Title" : "Photochemical pollution (O3)",
+		"Values" :  [2, 0, 1, 8]
+		}, 
+		{
+		"Title" : "Climatic Change (CO2)",
+		"Values" :  [3000, 0, 500, 17000]
+		}		
+		]
+	}
+}
