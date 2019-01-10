@@ -24,9 +24,9 @@ d3.json("./TV.json", function(data){
 
 			//Set default visualisation with : TV and Energy (MJ)
 			var dim = car.node().getBBox();
-			var tank = loadComponentIntoCar("svg/tank.svg", "tank", scaler(activeData[1]["Data"]["Values"][0]["Values"][1]), scaler(activeData[1]["Data"]["Values"][0]["Values"][1]), car, dim.width - 40, 30);	
+			var tank = loadComponentIntoCar("svg/tank.svg", "tank", scaler(activeData[1]["Data"]["Values"][0]["Values"][1]), scaler(activeData[1]["Data"]["Values"][0]["Values"][1]), car, dim.width - 40, 30);
 			var engine = loadComponentIntoCar("svg/thermEngine.svg", "engine", scaler(activeData[1]["Data"]["Values"][0]["Values"][0]) , scaler(activeData[1]["Data"]["Values"][0]["Values"][0]), car, 30, 30);
-			var nozzle = loadComponentIntoCar("svg/nozzle.svg", "nozzle", scaler(activeData[1]["Data"]["Values"][0]["Values"][3]), scaler(activeData[1]["Data"]["Values"][0]["Values"][3]), car, dim.width - 20, 30);
+			var nozzle = loadComponentIntoCar("svg/nozzle.svg", "nozzle", scaler(activeData[1]["Data"]["Values"][0]["Values"][3]), scaler(activeData[1]["Data"]["Values"][0]["Values"][3]), car, dim.width - 20, 20);
 /*
 			var tank = loadComponentIntoCar("svg/tank.svg", "tank", "40", "30", car, dim.width - 40, 30);	
 			var engine = loadComponentIntoCar("svg/thermEngine.svg", "engine", "30" , "30", car, 30, 30);
@@ -227,6 +227,8 @@ loopButton.onclick = function () {
 }
 
 function pathTween(d1, precision, scale) {
+    // scale = Math.min(1.2, scale)
+    console.log(scale)
     return function () {
         var path0 = this,
             path1 = path0.cloneNode(),
@@ -295,8 +297,9 @@ function getScaler(data, selected)
 		})])
 		.range([10, 60]);		
 	return scaler;
-}	
+}
 
+let duration = 1000;
 
 $(function () {
     $(document).on('change', 'input:radio', function (event) {
@@ -312,7 +315,7 @@ $(function () {
 		
 				var pEngineTherm = bat.select("path")
 				
-				pEngineTherm.transition().duration(2000)
+				pEngineTherm.transition().duration(duration)
 					.on("start", function repeat() {
 						d3.active(this)
 							.attrTween("d", pathTween(dEngineElectric, 1, tmpE / scaler(activeData[1]["Data"]["Values"][0]["Values"][0])))
@@ -323,7 +326,7 @@ $(function () {
 				var bat = d3.select("svg.nozzle")
 				
 				var pNozzle = bat.select("path")
-				pNozzle.transition().duration(2000)
+				pNozzle.transition().duration(duration)
 					.on("start", function repeat() {
 						d3.active(this)
 							.attrTween("d", pathTween(dPlug, 1, tmpN / scaler(activeData[1]["Data"]["Values"][0]["Values"][3])))
@@ -334,7 +337,7 @@ $(function () {
 				
 				var pTank = bat.select("path")
 
-				pTank.transition().duration(2000)
+				pTank.transition().duration(duration)
 					.on("start", function repeat() {
 						d3.active(this)
 							.attrTween("d", pathTween(dBattery, 1, tmpT / scaler(activeData[1]["Data"]["Values"][0]["Values"][1])))
@@ -354,7 +357,7 @@ $(function () {
 		
 				var pEngineTherm = bat.select("path")
 				dEngineTherm = pEngineTherm.attr("d");
-				pEngineTherm.transition().duration(2000)
+				pEngineTherm.transition().duration(duration)
 					.on("start", function repeat() {
 						d3.active(this)
 							.attrTween("d", pathTween(dEngineTherm, 1, tmpE / scaler(activeData[1]["Data"]["Values"][0]["Values"][0])))
@@ -366,7 +369,7 @@ $(function () {
 				
 				var pNozzle = bat.select("path")
 				dNozzle = pNozzle.attr("d");
-				pNozzle.transition().duration(2000)
+				pNozzle.transition().duration(duration)
 					.on("start", function repeat() {
 						d3.active(this)
 							.attrTween("d", pathTween(dNozzle, 1, tmpN / scaler(activeData[1]["Data"]["Values"][0]["Values"][3])))
@@ -377,7 +380,7 @@ $(function () {
 				
 				var pTank = bat.select("path")
 					dTank = pTank.attr("d");
-				pTank.transition().duration(2000)
+				pTank.transition().duration(duration)
 					.on("start", function repeat() {
 						d3.active(this)
 							.attrTween("d", pathTween(dTank, 1, tmpT / scaler(activeData[1]["Data"]["Values"][0]["Values"][1])))
