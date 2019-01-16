@@ -198,10 +198,11 @@ function doTransitionFor(object, carType) {
 
     var pTank = bat.select("path");
 
-    console.log(dataMap())
-
     var d = dataMap()[object][carType]["d"];
     var scale = dataMap()[object][carType]["scale"]();
+    if (state == "TV") {
+        scale = 1;
+    }
     var color = carType == "TV" ? "brown" : "yellow";
 
     pTank.transition().duration(transitionDuration)
@@ -231,9 +232,7 @@ function loopTransition(delay = 0) {
 }
 
 function pathTween(d1, precision, scale) {
-    console.log("scale surface: " + scale)
     scale = Math.sqrt(scale)
-    console.log("scale: " + scale)
     return function () {
         var path0 = this,
             path1 = path0.cloneNode(),
@@ -314,8 +313,6 @@ function triggerTransform() {
 $(function () {
     $(document).on('change', 'input:radio[name="car-type"]', function (event) {
         carType = event.target["value"]
-        console.log("event:")
-        console.log(event)
         triggerTransform();
     });
 });
