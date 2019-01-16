@@ -48,7 +48,34 @@ function loadComponentIntoCar(filePath, cssClassString, widthString, heightStrin
         d3.select("svg." + cssClassString)
         // Set the svg viewport dimensions.
             .attr("width", widthString)
-            .attr("height", heightString);
+            .attr("height", heightString)
+            .on("mouseover", function(){
+                var i = (state == "TV") ? 1 : 0
+                var j = 0
+                var data = getActiveData()
+                switch(cssClassString){
+                    case "engine":
+                        j=0
+                        break
+                    case "tank":
+                        j=2
+                        break
+                    case "nozzle":
+                        j=3
+                        break
+                }
+                var tip = document.createElement("div")
+                tip.id="temporaryTip"
+                tip.style.height = "25px"
+                tip.style.width = "100%"
+                tip.innerHTML = "Ce composant rejète " + data[i]["Data"]["Values"][0].Values[j] + " dans l'atmosphère"
+                var chart = document.getElementById("myAreaChart")
+                chart.parentNode.insertBefore(tip, chart.nextSibling);
+            })
+            .on("mouseleave", function() {
+                var el = document.getElementById("temporaryTip")
+                el.parentNode.removeChild(el);
+            })
     });
 }
 
