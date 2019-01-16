@@ -225,7 +225,7 @@ function loopTransition() {
 }
 
 function pathTween(d1, precision, scale) {
-    // scale = Math.min(1.2, scale)
+    scale = Math.sqrt(scale)
     return function () {
         var path0 = this,
             path1 = path0.cloneNode(),
@@ -393,13 +393,6 @@ $(function () {
                             .transition()
                     });
 
-            }
-            if (carType == "combustion") {
-                transformToCombustion()
-            } else if (carType == "electric") {
-                transformToElectric()
-            } else if (carType == "loop") {
-                loopTransition()
             }
         }
     });
