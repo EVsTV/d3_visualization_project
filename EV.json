@@ -1,0 +1,26 @@
+{
+"Type": "Electrical Vehicle",
+"Data" : 	
+	{
+	"Labels" : ["Components", "Battery", "Assembly", "Fueling"],
+	"Values" : [
+		{
+		"Title" : "Energy (MJ)",
+		"Values" :  [50000, 60000, 10000, 220000]
+		}, 
+		{
+		"Title" : "Photochemical pollution (O3)",
+		"Values" :  [2, 2.1, 1, 0.8]
+		}, 
+		{
+		"Title" : "Climatic Change (CO2)",
+		"Values" :  [3000, 2000, 500, 2000]
+		},
+		{
+		"Title" : "Autonomy (Km)",
+		"Values" :  [0, 0, 0, 400]
+		}		
+
+		]
+	}
+}

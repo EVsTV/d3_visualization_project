@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<!--<svg width="960" height="500">-->
+<!--<path transform="translate(180,150)scale(2,2)" fill="none" stroke="black" stroke-width="1.5"></path>-->
+<!--</svg>-->
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script>
+
+    d3.xml("../tank.svg").mimeType("image/svg+xml").get(function (error, xml) {
+        if (error) throw error;
+        var child = xml.documentElement;
+        child.classList.add("bat")
+        document.body.appendChild(child)
+        var bat = d3.select("svg.bat")
+        var p = bat.select("path").attr("transform", "translate(30,20)")
+
+        d0 = p.attr("d");
+
+        d3.xml("../battery.svg").mimeType("image/svg+xml").get(function (error, xml) {
+            var child = xml.documentElement;
+//            document.body.appendChild(child)
+
+            var p1 = d3.select(child).select("path");
+            d1 = p1.attr("d")
+
+            p.transition().duration(1000)
+                .on("start", function repeat() {
+                    d3.active(this)
+                        .attrTween("d", pathTween(d1, 1, 1))
+                        .attr("color", "yellow")
+                        .transition()
+                        .attrTween("d", pathTween(d0, 1, 1))
+                        .transition()
+                        .on("start", repeat);
+                });
+        });
+    });
+
+    function pathTween(d1, precision, scale) {
+        return function () {
+            var path0 = this,
+                path1 = path0.cloneNode(),
+                n0 = path0.getTotalLength(),
+                n1 = (path1.setAttribute("d", d1), path1).getTotalLength();
+
+            // Uniform sampling of distance based on specified precision.
+            var distances = [0], i = 0, dt = precision / Math.max(n0, n1);
+            while ((i += dt) < 1) distances.push(i);
+            distances.push(1);
+
+            // Compute point-interpolators at each distance.
+            var points = distances.map(function (t) {
+                var p0 = path0.getPointAtLength(t * n0),
+                    p1 = path1.getPointAtLength(t * n1);
+                return d3.interpolate([p0.x, p0.y], [p1.x*scale, p1.y*scale]);
+            });
+
+            return function (t) {
+                return "M" + points.map(function (p) {
+                    return p(t);
+                }).join("L");
+            };
+        };
+    }
+
+</script>
