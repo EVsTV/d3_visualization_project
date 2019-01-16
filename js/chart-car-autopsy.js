@@ -82,6 +82,7 @@ function loadComponentIntoCar(filePath, cssClassString, widthString, heightStrin
 var buttonEnergy = document.getElementById("energy")
 var buttonPhoto = document.getElementById("pollution")
 var buttonCO2 = document.getElementById("climate-change")
+var buttonAutonomy = document.getElementById("autonomy")
 
 
 d3.xml("svg/thermEngine.svg").mimeType("image/svg+xml").get(function (error, xml) {
@@ -277,6 +278,11 @@ function getActiveData() {
         var data = [JSON.parse(JSON.stringify(EV)), JSON.parse(JSON.stringify(TV))]
         data[0]["Data"]["Values"] = [data[0]["Data"]["Values"][2]]
         data[1]["Data"]["Values"] = [data[1]["Data"]["Values"][2]]
+    }
+    if (buttonAutonomy.checked == true) {
+        var data = [JSON.parse(JSON.stringify(EV)), JSON.parse(JSON.stringify(TV))]
+        data[0]["Data"]["Values"] = [data[0]["Data"]["Values"][3]]
+        data[1]["Data"]["Values"] = [data[1]["Data"]["Values"][3]]
     }
     return data
 }

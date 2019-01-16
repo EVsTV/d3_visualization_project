@@ -15,6 +15,10 @@
 		{
 		"Title" : "Climatic Change (CO2)",
 		"Values" :  [3000, 0, 500, 17000]
+		}, 
+		{
+		"Title" : "Autonomy (Km)",
+		"Values" :  [1300, 1300, 1300, 1300]
 		}		
 		]
 	}
