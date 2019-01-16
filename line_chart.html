@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>D3 - Line Chart - continuous function</title>
+    <!-- script type="text/javascript" src="https://raw.github.com/jquery/sizzle/master/sizzle.js"></script -->
+    <script type="text/javascript" src="http://mbostock.github.com/d3/d3.min.js"></script>
+    <script type="text/javascript" src="http://mbostock.github.com/d3/d3.time.min.js"></script>
+    <style type="text/css">
+body {
+  font: 12px sans-serif;
+}
+.mouse_area {
+  opacity: 0;
+}
+.guides {
+  stroke-width: 1px;
+}
+.guides line {
+  stroke: #BBF;
+  shape-rendering: crispEdges;
+}
+.guides circle {
+  fill: #BBF;
+  stroke: #348;
+  opacity: 0.2;
+}
+.rules line, .rules path {
+  shape-rendering: crispEdges;
+  stroke: #000;
+}
+.rules .tick {
+}
+.rules .minor {
+  stroke: #BBB;
+}
+.rules .domain {
+  fill: none;
+}
+.grid .tick {
+  stroke: #CCC;
+}
+.series path {
+  fill: none;
+  stroke: #348;
+  stroke-width: 3px;
+}
+    </style>
+  </head>
+  <body>
+    <script type="text/javascript">
+var w = 800;
+var h = 600;
+var x = d3.scale.linear().domain([ 0, 100]).range([0,w]);
+var y = d3.scale.linear().domain([ 0, 2000]).range([h,0]);
+var pad = 50;
+var svg = d3.select("body")
+    .append("svg:svg")
+    .attr("height", h + pad)
+    .attr("width",  w + pad)
+var vis = svg.append("svg:g")
+    .attr("transform", "translate(42,20)")
+var legend = d3.select("body").append("div")
+    .classed("legend", true)
+var continuous_tv = calculate_polution( 1500, 1.2);
+var continuous_ev = calculate_polution(1200, 5.6);
+make_rules();
+chart_line(continuous_ev);
+chart_line(continuous_tv);
+function calculate_polution(initial_polution, consumption) {
+  return (function(xi) {
+    value =  initial_polution + xi * consumption
+      console.log(value,xi)
+      return value;
+    });
+}
+function chart_line(continuous) {
+  var g = vis.append("svg:g")
+      .classed("series", true)
+  g.append("svg:path")
+      .attr("d", function(d) { return d3.svg.line()(
+        x.ticks(100).map(function(xi) {
+          return [ x(xi), y(continuous(xi)) ]
+        })
+       )})
+}
+function make_rules() {
+  var rules = vis.append("svg:g").classed("rules", true)
+  function make_x_axis() {
+    return d3.svg.axis()
+        .scale(x)
+        .orient("bottom")
+        .ticks(10)
+  }
+  function make_y_axis() {
+    return d3.svg.axis()
+        .scale(y)
+        .orient("left")
+        .ticks(10)
+  }
+  rules.append("svg:g").classed("grid x_grid", true)
+      .attr("transform", "translate(0,"+h+")")
+      .call(make_x_axis()
+        .tickSize(-h,0,0)
+        .tickFormat("")
+      )
+  rules.append("svg:g").classed("grid y_grid", true)
+      .call(make_y_axis()
+        .tickSize(-w,0,0)
+        .tickFormat("")
+      )
+  rules.append("svg:g").classed("labels x_labels", true)
+      .attr("transform", "translate(0,"+h+")")
+      .call(make_x_axis()
+        .tickSize(5)
+        // .tickFormat(d3.time.format("%Y/%m"))
+      )
+  rules.append("svg:g").classed("labels y_labels", true)
+      .call(make_y_axis()
+        .tickSubdivide(1)
+        .tickSize(10, 5, 0)
+      )
+}
+    </script>
+  </body>
+</html>
