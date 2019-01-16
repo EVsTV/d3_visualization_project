@@ -217,20 +217,17 @@ function doTransitionFor(object, carType) {
 function loopTransition(delay = 0) {
     if (state != "EV") {
         var timeOutElectric = setTimeout(transformToElectric, delay += duration);
-        if (carType != "loop") {
-            clearTimeout(timeOutElectric);
-            triggerTransform();
-            return;
-        }
     }
     var timeOutCombustion = setTimeout(transformToCombustion, delay += 2 * duration);
+    // Repeat
+    var repeat = setTimeout(loopTransition, delay += duration);
     if (carType != "loop") {
+        clearTimeout(timeOutElectric);
         clearTimeout(timeOutCombustion);
+        clearTimeout(repeat);
         triggerTransform();
         return;
     }
-    // Repeat
-    setTimeout(loopTransition, delay += duration);
 }
 
 function pathTween(d1, precision, scale) {
