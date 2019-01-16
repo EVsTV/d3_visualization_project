@@ -78,7 +78,7 @@ function loadComponentIntoCar(filePath, cssClassString, widthString, heightStrin
             })
     });
 }
-
+var info	 = document.getElementById("complementary-info")
 var buttonEnergy = document.getElementById("energy")
 var buttonPhoto = document.getElementById("pollution")
 var buttonCO2 = document.getElementById("climate-change")
@@ -268,21 +268,25 @@ function getActiveData() {
         var data = [JSON.parse(JSON.stringify(EV)), JSON.parse(JSON.stringify(TV))]
         data[0]["Data"]["Values"] = [data[0]["Data"]["Values"][0]]
         data[1]["Data"]["Values"] = [data[1]["Data"]["Values"][0]]
+		info.innerHTML = "35 000 MJ correspond a une année de chauffage pour un logement de 70m².";
     }
     if (buttonPhoto.checked == true) {
         var data = [JSON.parse(JSON.stringify(EV)), JSON.parse(JSON.stringify(TV))]
         data[0]["Data"]["Values"] = [data[0]["Data"]["Values"][1]]
         data[1]["Data"]["Values"] = [data[1]["Data"]["Values"][1]]
+		info.innerHTML = "Une imprimante peut produire entre 1 et 10 ug/m3 pendant une journée dans un bureau. Une concentration de 240 ug/m3 est considéré comme dangereuse.";
     }
     if (buttonCO2.checked == true) {
         var data = [JSON.parse(JSON.stringify(EV)), JSON.parse(JSON.stringify(TV))]
         data[0]["Data"]["Values"] = [data[0]["Data"]["Values"][2]]
         data[1]["Data"]["Values"] = [data[1]["Data"]["Values"][2]]
+		info.innerHTML = "900 000g de CO² correspond a la quantité produite pour alimenter en électricité le chauffage d'un logement de 70m² pendant 1 an.";
     }
     if (buttonAutonomy.checked == true) {
         var data = [JSON.parse(JSON.stringify(EV)), JSON.parse(JSON.stringify(TV))]
         data[0]["Data"]["Values"] = [data[0]["Data"]["Values"][3]]
         data[1]["Data"]["Values"] = [data[1]["Data"]["Values"][3]]
+		info.innerHTML = "";
     }
     return data
 }
