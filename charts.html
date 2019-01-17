@@ -30,8 +30,40 @@
             width: 100%;
             height: 100%;
         }
-        .btn-group{
+
+        .btn-group {
             white-space: normal;
+        }
+        .guides {
+            stroke-width: 1px;
+        }
+        .guides line {
+            stroke: #BBF;
+            shape-rendering: crispEdges;
+        }
+        .guides circle {
+            fill: #BBF;
+            stroke: #348;
+            opacity: 0.2;
+        }
+        .rules line, .rules path {
+            shape-rendering: crispEdges;
+            stroke: #000;
+        }
+        .rules .tick {
+        }
+        .rules .minor {
+            stroke: #BBB;
+        }
+        .rules .domain {
+            fill: none;
+        }
+        .grid .tick {
+            stroke: #CCC;
+        }
+        .series path {
+            /*stroke: #883f53;*/
+            stroke-width: 3px;
         }
     </style>
 </head>
@@ -100,15 +132,18 @@
                                     <!--<button type="button" class="btn btn-secondary active" id="combustion">Combustion powered</button>-->
                                     <!--<button type="button" class="btn btn-secondary" id="loop">Loop</button>-->
                                     <label class="btn btn-secondary">
-                                        <input type="radio" name="car-type" id="electric" autocomplete="off" value="electric">
+                                        <input type="radio" name="car-type" id="electric" autocomplete="off"
+                                               value="electric">
                                         Electric
                                     </label>
                                     <label class="btn btn-secondary active">
-                                        <input type="radio" name="car-type" id="combustion" autocomplete="off" checked value="combustion">
+                                        <input type="radio" name="car-type" id="combustion" autocomplete="off" checked
+                                               value="combustion">
                                         Combustion powered
                                     </label>
                                     <label class="btn btn-secondary">
-                                        <input type="radio" name="car-type" id="loop" autocomplete="off" value="loop"> Loop
+                                        <input type="radio" name="car-type" id="loop" autocomplete="off" value="loop">
+                                        Loop
                                     </label>
                                 </div>
                             </div>
@@ -116,48 +151,62 @@
                                 <div id="type-chooser-container" class="btn-group btn-group-toggle flex-wrap"
                                      data-toggle="buttons">
                                     <label class="btn btn-secondary active">
-                                        <input type="radio" name="category" id="energy" autocomplete="off" value="Energy (MJ)" checked>
+                                        <input type="radio" name="category" id="energy" autocomplete="off"
+                                               value="Energy (MJ)" checked>
                                         Energy (MJ)
                                     </label>
                                     <label class="btn btn-secondary">
-                                        <input type="radio" name="category" id="pollution" autocomplete="off" value="Photochemical pollution (O3)">
+                                        <input type="radio" name="category" id="pollution" autocomplete="off"
+                                               value="Photochemical pollution (O3)">
                                         Photochemical pollution (O3)
                                     </label>
                                     <label class="btn btn-secondary">
-                                        <input type="radio" name="category" id="climate-change" autocomplete="off" value="Climatic Change (CO2)">
+                                        <input type="radio" name="category" id="climate-change" autocomplete="off"
+                                               value="Climatic Change (CO2)">
                                         Climatic Change (CO2)
                                     </label>
                                     <label class="btn btn-secondary">
-                                        <input type="radio" name="category" id="autonomy" autocomplete="off" value="Autonomy (Km)">
+                                        <input type="radio" name="category" id="autonomy" autocomplete="off"
+                                               value="Autonomy (Km)">
                                         Autonomy (Km)
                                     </label>
                                 </div>
                             </div>
                         </div>
 
-                        <div id="myAreaChart" width="100%" height="30"></div>
+                        <div id="myAreaChart" width="100%" height="300"></div>
+                        <div class="Info">
+                            <H3>Infos complémentaires</H3>
+                            <div id="complementary-info"></div>
+                        </div>
                     </div>
-					<div class="Info" >
-						<H3>Infos complémentaires</H3>
-						<div id="complementary-info"></div>
-					</div>
-				</div>
 
-            </div>
-        </div>
-        <!-- /.container-fluid -->
-
-        <!-- Sticky Footer -->
-        <footer class="sticky-footer">
-            <div class="container my-auto">
-                <div class="copyright text-center my-auto">
-                    <span>Copyright © Your Website 2018</span>
+                </div>
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <i class="fas fa-chart-area"></i>
+                        Evolution of
+                    </div>
+                    <div class="card-body">
+                    </div>
+                    <div id="lineChart" width="100%" height="30"></div>
                 </div>
             </div>
-        </footer>
-
+        </div>
     </div>
-    <!-- /.content-wrapper -->
+    <!-- /.container-fluid -->
+
+    <!-- Sticky Footer -->
+    <footer class="sticky-footer">
+        <div class="container my-auto">
+            <div class="copyright text-center my-auto">
+                <span>Copyright © Your Website 2018</span>
+            </div>
+        </div>
+    </footer>
+
+</div>
+<!-- /.content-wrapper -->
 
 </div>
 <!-- /#wrapper -->
@@ -203,8 +252,8 @@
 <!-- Demo scripts for this page-->
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script src="js/chart-car-autopsy.js"></script>
+<script src="js/couts.js"></script>
 <!--<script src="js/demo/chart-area-demo.js"></script>-->
-
 
 
 </body>
