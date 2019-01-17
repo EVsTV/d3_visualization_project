@@ -304,7 +304,7 @@ function getScaler(data, selected) {
                 return d3.max(data["Values"])
         })
     })])
-        .range([10, 60]);
+        .range([20, 70]);
     return scaler;
 }
 
