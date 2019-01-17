@@ -16,7 +16,7 @@ The data we used to make this visualisation comes from this study: Les potentiel
 ## Description
 Ce projet vise à comparer l'impact environnemental de la production desvoitures thermiques et électriques.
 La visualisation a été pensée comme un outil d'aide à la décision pour le grand public. Nous espérons qu'en utilisant notre
-travail, les citoyens acquiérront une mailleure compréhension des implications derrière chaque option, et effectueront leur choix
+travail, les citoyens acquerront une mailleure compréhension des implications derrière chaque option, et effectueront leur choix
 en conséquence.
 
 ## À propos
