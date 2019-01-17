@@ -4,7 +4,7 @@ var EV;
 var activeData;
 var scaler;
 var state;
-var transitionDuration = 2000;
+var transitionDuration = 1000;
 var carType = "combustion";
 
 d3.json("./TV.json", function (data) {
@@ -26,9 +26,9 @@ d3.json("./TV.json", function (data) {
 
             //Set default visualisation with : TV and Energy (MJ)
             var dim = car.node().getBBox();
-            var tank = loadComponentIntoCar("svg/tank.svg", "tank", scaler(activeData[1]["Data"]["Values"][0]["Values"][1]), scaler(activeData[1]["Data"]["Values"][0]["Values"][1]), car, dim.width - 40, 30);
-            var engine = loadComponentIntoCar("svg/thermEngine.svg", "engine", scaler(activeData[1]["Data"]["Values"][0]["Values"][0]), scaler(activeData[1]["Data"]["Values"][0]["Values"][0]), car, 30, 30);
-            var nozzle = loadComponentIntoCar("svg/nozzle.svg", "nozzle", scaler(activeData[1]["Data"]["Values"][0]["Values"][3]), scaler(activeData[1]["Data"]["Values"][0]["Values"][3]), car, dim.width - 20, 20);
+            loadComponentIntoCar("svg/tank.svg", "tank", scaler(activeData[1]["Data"]["Values"][0]["Values"][1]), scaler(activeData[1]["Data"]["Values"][0]["Values"][1]), car, dim.width - 40, 30);
+            loadComponentIntoCar("svg/thermEngine.svg", "engine", scaler(activeData[1]["Data"]["Values"][0]["Values"][0]), scaler(activeData[1]["Data"]["Values"][0]["Values"][0]), car, 30, 30);
+            loadComponentIntoCar("svg/nozzle.svg", "nozzle", scaler(activeData[1]["Data"]["Values"][0]["Values"][3]), scaler(activeData[1]["Data"]["Values"][0]["Values"][3]), car, dim.width - 20, 20);
             state = "TV";
         });
     });
@@ -48,93 +48,42 @@ function loadComponentIntoCar(filePath, cssClassString, widthString, heightStrin
         d3.select("svg." + cssClassString)
         // Set the svg viewport dimensions.
             .attr("width", widthString)
-            .attr("height", heightString);
+            .attr("height", heightString)
+            .on("mouseover", function(){
+                var i = (state == "TV") ? 1 : 0
+                var j = 0
+                var data = getActiveData()
+                switch(cssClassString){
+                    case "engine":
+                        j=0
+                        break
+                    case "tank":
+                        j=2
+                        break
+                    case "nozzle":
+                        j=3
+                        break
+                }
+                var tip = document.createElement("div")
+                tip.id="temporaryTip"
+                tip.style.height = "25px"
+                tip.style.width = "100%"
+                tip.innerHTML = "Ce composant rejète " + data[i]["Data"]["Values"][0].Values[j] + " dans l'atmosphère"
+                var chart = document.getElementById("myAreaChart")
+                chart.parentNode.insertBefore(tip, chart.nextSibling);
+            })
+            .on("mouseleave", function() {
+                var el = document.getElementById("temporaryTip")
+                el.parentNode.removeChild(el);
+            })
     });
 }
-
+var info	 = document.getElementById("complementary-info")
 var buttonEnergy = document.getElementById("energy")
 var buttonPhoto = document.getElementById("pollution")
 var buttonCO2 = document.getElementById("climate-change")
+var buttonAutonomy = document.getElementById("autonomy")
 
-function transformToCombustion() {
-    if (state != "TV") {
-        state = "TV";
-        var bat = d3.select("svg.engine")
-        var pEngineTherm = bat.select("path")
-        pEngineTherm.transition().duration(transitionDuration)
-            .on("start", function repeat() {
-                d3.active(this)
-                    .attrTween("d", pathTween(dEngineTherm, 1, scaler(activeData[1]["Data"]["Values"][0]["Values"][0]) / scaler(activeData[0]["Data"]["Values"][0]["Values"][0])))
-                    .attr("transform", "translate(0,0)")
-                    .style("fill", "brown")
-                    .transition()
-            });
-
-        var bat = d3.select("svg.nozzle");
-        var pNozzle = bat.select("path");
-        pNozzle.transition().duration(transitionDuration)
-            .on("start", function repeat() {
-                d3.active(this)
-                    .attrTween("d", pathTween(dNozzle, 1, scaler(activeData[1]["Data"]["Values"][0]["Values"][3]) / scaler(activeData[0]["Data"]["Values"][0]["Values"][3])))
-                    .attr("transform", "translate(0,0)")
-                    .style("fill", "brown")
-                    .transition()
-            });
-        var bat = d3.select("svg.tank")
-        var pTank = bat.select("path")
-        pTank.transition().duration(transitionDuration)
-            .on("start", function repeat() {
-                d3.active(this)
-                    .attrTween("d", pathTween(dTank, 1, scaler(activeData[1]["Data"]["Values"][0]["Values"][1]) / scaler(activeData[0]["Data"]["Values"][0]["Values"][1])))
-                    .attr("transform", "translate(0,0)")
-                    .style("fill", "brown")
-                    .transition()
-            });
-    }
-}
-
-function transformToElectric() {
-    if (state != "EV") {
-        state = "EV";
-
-        var bat = d3.select("svg.engine")
-
-        var pEngineTherm = bat.select("path")
-        pEngineTherm.transition().duration(transitionDuration)
-            .on("start", function repeat() {
-                d3.active(this)
-                    .attrTween("d", pathTween(dEngineElectric, 1, scaler(activeData[0]["Data"]["Values"][0]["Values"][0]) / scaler(activeData[1]["Data"]["Values"][0]["Values"][0])))
-                    .attr("transform", "translate(0,0)")
-                    .style("fill", "yellow")
-                    .transition()
-            });
-
-        var bat = d3.select("svg.nozzle")
-
-        var pNozzle = bat.select("path")
-
-        pNozzle.transition().duration(transitionDuration)
-            .on("start", function repeat() {
-                d3.active(this)
-                    .attrTween("d", pathTween(dPlug, 1, scaler(activeData[0]["Data"]["Values"][0]["Values"][3]) / scaler(activeData[1]["Data"]["Values"][0]["Values"][3])))
-                    .attr("transform", "translate(0,0)")
-                    .style("fill", "yellow")
-                    .transition()
-            });
-        var bat = d3.select("svg.tank")
-
-        var pTank = bat.select("path")
-
-        pTank.transition().duration(transitionDuration)
-            .on("start", function repeat() {
-                d3.active(this)
-                    .attrTween("d", pathTween(dBattery, 1, scaler(activeData[0]["Data"]["Values"][0]["Values"][1]) / scaler(activeData[1]["Data"]["Values"][0]["Values"][1])))
-                    .attr("transform", "translate(0,0)")
-                    .style("fill", "yellow")
-                    .transition()
-            });
-    }
-}
 
 d3.xml("svg/thermEngine.svg").mimeType("image/svg+xml").get(function (error, xml) {
     var child = xml.documentElement;
@@ -172,60 +121,119 @@ d3.xml("svg/battery.svg").mimeType("image/svg+xml").get(function (error, xml) {
     pBattery = d3.select(child).select("path");
     dBattery = pBattery.attr("d")
 });
+var dataMap = function () {
+    return {
+        "engine": {
+            "css": "svg.engine",
+            "TV": {
+                "d": dEngineTherm,
+                "scale": function () {
+                    return 1 / dataMap()["engine"]["EV"]["scale"]();
+                }
+            },
+            "EV": {
+                "d": dEngineElectric,
+                "scale": function () {
+                    return scaler(activeData[1]["Data"]["Values"][0]["Values"][0]) /
+                        scaler(activeData[0]["Data"]["Values"][0]["Values"][0]);
+                }
+            }
+        },
+        "nozzle": {
+            "css": "svg.nozzle",
+            "TV": {
+                "d": dNozzle,
+                "scale": function () {
+                    return scaler(activeData[1]["Data"]["Values"][0]["Values"][0]) /
+                        scaler(activeData[0]["Data"]["Values"][0]["Values"][0]);
+                }
+            },
+            "EV": {
+                "d": dPlug,
+                "scale": function () {
+                    return 1 / dataMap()["nozzle"]["TV"]["scale"]();
+                }
+            },
+        },
+        "tank": {
+            "css": "svg.tank",
+            "TV": {
+                "d": dTank,
+                "scale": function () {
+                    return scaler(activeData[1]["Data"]["Values"][0]["Values"][1]) /
+                        scaler(activeData[0]["Data"]["Values"][0]["Values"][1]);
+                }
+            },
+            "EV": {
+                "d": dBattery,
+                "scale": function () {
+                    return 1 / dataMap()["tank"]["TV"]["scale"]();
+                }
+            },
+        },
 
+    }
+};
 
-function loopTransition() {
-    var bat = d3.select("svg.engine")
-    var pEngineTherm = bat.select("path")
+function transformToCombustion() {
+    if (state != "TV") {
+        state = "TV";
+        doTransitionFor("engine", state)
+        doTransitionFor("nozzle", state);
+        doTransitionFor("tank", state);
+    }
+}
 
-    pEngineTherm.transition().duration(transitionDuration)
-        .on("start", function repeat() {
-            state = "EV";
-            var tmp = d3.active(this)
-                .attrTween("d", pathTween(dEngineElectric, 1, scaler(activeData[0]["Data"]["Values"][0]["Values"][0]) / scaler(activeData[1]["Data"]["Values"][0]["Values"][0])))
-                .attr("transform", "translate(0,0)")
-                .style("fill", "yellow")
-                .transition()
-            state = "TV";
-            tmp.attrTween("d", pathTween(dEngineTherm, 1, scaler(activeData[1]["Data"]["Values"][0]["Values"][0]) / scaler(activeData[0]["Data"]["Values"][0]["Values"][0])))
-                .style("fill", "brown")
-                .transition()
-                .on("start", repeat);
-        });
+function transformToElectric() {
+    if (state != "EV") {
+        state = "EV";
+        doTransitionFor("engine", state);
+        doTransitionFor("nozzle", state);
+        doTransitionFor("tank", state)
+    }
+}
 
-    var bat = d3.select("svg.nozzle")
-    var pNozzle = bat.select("path")
-    pNozzle.transition().duration(transitionDuration)
-        .on("start", function repeat() {
-            d3.active(this)
-                .attrTween("d", pathTween(dPlug, 1, scaler(activeData[0]["Data"]["Values"][0]["Values"][3]) / scaler(activeData[1]["Data"]["Values"][0]["Values"][3])))
-                .attr("transform", "translate(0,0)")
-                .style("fill", "yellow")
-                .transition()
-                .attrTween("d", pathTween(dNozzle, 1, scaler(activeData[1]["Data"]["Values"][0]["Values"][3]) / scaler(activeData[0]["Data"]["Values"][0]["Values"][3])))
-                .style("fill", "brown")
-                .transition()
-                .on("start", repeat);
-        });
-    var bat = d3.select("svg.tank")
-    var pTank = bat.select("path")
+function doTransitionFor(object, carType) {
+
+    var bat = d3.select(dataMap()[object]["css"]);
+
+    var pTank = bat.select("path");
+
+    var d = dataMap()[object][carType]["d"];
+    var scale = dataMap()[object][carType]["scale"]();
+    if (state == "TV") {
+        scale = 1;
+    }
+    var color = carType == "TV" ? "brown" : "yellow";
 
     pTank.transition().duration(transitionDuration)
         .on("start", function repeat() {
             d3.active(this)
-                .attrTween("d", pathTween(dBattery, 1, scaler(activeData[0]["Data"]["Values"][0]["Values"][1]) / scaler(activeData[1]["Data"]["Values"][0]["Values"][1])))
+                .attrTween("d", pathTween(d, 1, scale))
                 .attr("transform", "translate(0,0)")
-                .style("fill", "yellow")
+                .style("fill", color)
                 .transition()
-                .attrTween("d", pathTween(dTank, 1, scaler(activeData[1]["Data"]["Values"][0]["Values"][1]) / scaler(activeData[0]["Data"]["Values"][0]["Values"][1])))
-                .style("fill", "brown")
-                .transition()
-                .on("start", repeat);
         });
 }
 
+function loopTransition(delay = 0) {
+    if (state != "EV") {
+        var timeOutElectric = setTimeout(transformToElectric, delay += duration);
+    }
+    var timeOutCombustion = setTimeout(transformToCombustion, delay += 2 * duration);
+    // Repeat
+    var repeat = setTimeout(loopTransition, delay += duration);
+    if (carType != "loop") {
+        clearTimeout(timeOutElectric);
+        clearTimeout(timeOutCombustion);
+        clearTimeout(repeat);
+        triggerTransform();
+        return;
+    }
+}
+
 function pathTween(d1, precision, scale) {
-    // scale = Math.min(1.2, scale)
+    scale = Math.sqrt(scale)
     return function () {
         var path0 = this,
             path1 = path0.cloneNode(),
@@ -260,16 +268,25 @@ function getActiveData() {
         var data = [JSON.parse(JSON.stringify(EV)), JSON.parse(JSON.stringify(TV))]
         data[0]["Data"]["Values"] = [data[0]["Data"]["Values"][0]]
         data[1]["Data"]["Values"] = [data[1]["Data"]["Values"][0]]
+		info.innerHTML = "35 000 MJ correspond a une année de chauffage pour un logement de 70m².";
     }
     if (buttonPhoto.checked == true) {
         var data = [JSON.parse(JSON.stringify(EV)), JSON.parse(JSON.stringify(TV))]
         data[0]["Data"]["Values"] = [data[0]["Data"]["Values"][1]]
         data[1]["Data"]["Values"] = [data[1]["Data"]["Values"][1]]
+		info.innerHTML = "Une imprimante peut produire entre 1 et 10 ug/m3 pendant une journée dans un bureau. Une concentration de 240 ug/m3 est considéré comme dangereuse.";
     }
     if (buttonCO2.checked == true) {
         var data = [JSON.parse(JSON.stringify(EV)), JSON.parse(JSON.stringify(TV))]
         data[0]["Data"]["Values"] = [data[0]["Data"]["Values"][2]]
         data[1]["Data"]["Values"] = [data[1]["Data"]["Values"][2]]
+		info.innerHTML = "900 000g de CO² correspond a la quantité produite pour alimenter en électricité le chauffage d'un logement de 70m² pendant 1 an.";
+    }
+    if (buttonAutonomy.checked == true) {
+        var data = [JSON.parse(JSON.stringify(EV)), JSON.parse(JSON.stringify(TV))]
+        data[0]["Data"]["Values"] = [data[0]["Data"]["Values"][3]]
+        data[1]["Data"]["Values"] = [data[1]["Data"]["Values"][3]]
+		info.innerHTML = "";
     }
     return data
 }
@@ -287,21 +304,26 @@ function getScaler(data, selected) {
                 return d3.max(data["Values"])
         })
     })])
-        .range([10, 60]);
+        .range([20, 70]);
     return scaler;
 }
 
 let duration = 1000;
+
+function triggerTransform() {
+    if (carType == "combustion") {
+        transformToCombustion()
+    } else if (carType == "electric") {
+        transformToElectric()
+    } else if (carType == "loop") {
+        loopTransition()
+    }
+}
+
 $(function () {
     $(document).on('change', 'input:radio[name="car-type"]', function (event) {
         carType = event.target["value"]
-        if (carType == "combustion") {
-            transformToCombustion()
-        } else if (carType == "electric") {
-            transformToElectric()
-        } else if (carType == "loop") {
-            loopTransition()
-        }
+        triggerTransform();
     });
 });
 
@@ -393,13 +415,6 @@ $(function () {
                             .transition()
                     });
 
-            }
-            if (carType == "combustion") {
-                transformToCombustion()
-            } else if (carType == "electric") {
-                transformToElectric()
-            } else if (carType == "loop") {
-                loopTransition()
             }
         }
     });
