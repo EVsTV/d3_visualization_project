@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  <head>
+<head>
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>EVsTV - Dashboard</title>
+    <title>EVsTV - Context</title>
 
     <!-- Bootstrap core CSS-->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -23,135 +23,127 @@
     <!-- Custom styles for this template-->
     <link href="css/sb-admin.css" rel="stylesheet">
 
-  </head>
+</head>
 
-  <body id="page-top">
+<body id="page-top">
 
-    <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
+<nav class="navbar navbar-expand navbar-dark bg-dark static-top">
 
-      <a class="navbar-brand mr-1" href="index.html">EVsTV</a>
+    <a class="navbar-brand mr-1" href="index.html">EVsTV</a>
 
-      <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
+    <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
         <i class="fas fa-bars"></i>
-      </button>
+    </button>
 
-      <div class="navbar-brand mr-1" style="width:100%; text-align:center;"><span>electric vehicles VS combustion-powered (thermal) vehicles</span></div>
+    <div class="navbar-brand mr-1" style="width:100%; text-align:center;"><span>electric vehicles VS combustion-powered (thermal) vehicles</span>
+    </div>
 
-    </nav>
+</nav>
 
-    <div id="wrapper">
+<div id="wrapper">
 
-      <!-- Sidebar -->
-      <ul class="sidebar navbar-nav">
+    <!-- Sidebar -->
+    <ul class="sidebar navbar-nav">
         <li class="nav-item active">
-          <a class="nav-link" href="index.html">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Dashboard</span>
-          </a>
+            <a class="nav-link" href="index.html">
+                <i class="fas fa-fw fa-tachometer-alt"></i>
+                <span>Context</span>
+            </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="charts.html">
-            <i class="fas fa-fw fa-chart-area"></i>
-            <span>Charts</span></a>
+            <a class="nav-link" href="charts.html">
+                <i class="fas fa-fw fa-chart-area"></i>
+                <span>Charts</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="data.html">
-            <i class="fas fa-fw fa-table"></i>
-            <span>Data</span></a>
+            <a class="nav-link" href="data.html">
+                <i class="fas fa-fw fa-table"></i>
+                <span>Data</span></a>
         </li>
-      </ul>
+    </ul>
 
-      <div id="content-wrapper">
+    <div id="content-wrapper">
 
         <div class="container-fluid">
 
-          <!-- Breadcrumbs-->
-          <ol class="breadcrumb">
-            <li class="breadcrumb-item">
-              <a href="#">Dashboard</a>
-            </li>
-            <li class="breadcrumb-item active">Overview</li>
-          </ol>
+            <div class="card">
+                <h5 class="card-header">Context</h5>
+                <div class="card-body">
+                    <h5 class="card-title">About the project</h5>
+                    <p class="card-text">EVsTV is a small project made by a team of university students at
+                        <a href="http://master-info.univ-lyon1.fr/IA/">Claude Bernard Lyon 1 University</a> for the
+                        <a href="https://lyondataviz.github.io/teaching/lyon1-m2/2018/">course Data Visualization</a>.
+                        Its purpose is to present a visualization with d3.js that builds awareness regarding impacts
+                        and pollutions produced during the life-cycle of electric vehicles compared to those of
+                        ICEV (internal combustion engine vehicles).</p>
 
-          <div class="card">
-						<h5 class="card-header">Context</h5>
-						<div class="card-body">
-							<h5 class="card-title">About the project</h5>
-							<p class="card-text">EVsTV is a small project made by a team of university students at Université Claude Bernard Lyon 1 for the course Data Visualization. Its purpose is to present a visualization with d3.js that builds awareness regarding impacts and pollutions produced during the life-cycle of electric vehicles compared to those of combustion-powered cars.</p>
-
-							<p>Team members:
-                <ul>
-                  <li>LoicCherel</li>
-                  <li>Pi-Ay</li>
-                  <li>rDelaye</li>
-                  <li>kalnar</li>
-                </ul>
-							</p>
-							<a href="https://github.com/EVsTV" class="btn btn-primary">Go to github page</a>
-						</div>
-					</div>
+                    <p>Team members:
+                    <ul>
+                        <li>LoicCherel</li>
+                        <li>Pi-Ay</li>
+                        <li>rDelaye</li>
+                        <li>kalnar</li>
+                    </ul>
+                    </p>
+                    <a href="https://github.com/EVsTV" class="btn btn-primary">Go to github page of the project</a>
+                    <a href="http://master-info.univ-lyon1.fr/IA/" class="btn btn-primary">Go to page of the course Data Visualization</a>
+                    <a href="https://lyondataviz.github.io/teaching/lyon1-m2/2018/" class="btn btn-primary">Go to master's program site</a>
+                </div>
+            </div>
 
         </div>
         <!-- /.container-fluid -->
 
-        <!-- Sticky Footer -->
-        <footer class="sticky-footer">
-          <div class="container my-auto">
-            <div class="copyright text-center my-auto">
-              <span>Copyright © Your Website 2018</span>
-            </div>
-          </div>
-        </footer>
-
-      </div>
-      <!-- /.content-wrapper -->
-
     </div>
-    <!-- /#wrapper -->
+    <!-- /.content-wrapper -->
 
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-      <i class="fas fa-angle-up"></i>
-    </a>
+</div>
+<!-- /#wrapper -->
 
-    <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+<!-- Logout Modal-->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">×</span>
-            </button>
-          </div>
-          <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-          <div class="modal-footer">
-            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-            <a class="btn btn-primary" href="login.html">Logout</a>
-          </div>
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-primary" href="login.html">Logout</a>
+            </div>
         </div>
-      </div>
     </div>
+</div>
 
-    <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- Bootstrap core JavaScript-->
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+<!-- Core plugin JavaScript-->
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
-    <!-- Page level plugin JavaScript-->
-    <script src="vendor/chart.js/Chart.min.js"></script>
-    <script src="vendor/datatables/jquery.dataTables.js"></script>
-    <script src="vendor/datatables/dataTables.bootstrap4.js"></script>
+<!-- Page level plugin JavaScript-->
+<script src="vendor/chart.js/Chart.min.js"></script>
+<script src="vendor/datatables/jquery.dataTables.js"></script>
+<script src="vendor/datatables/dataTables.bootstrap4.js"></script>
 
-    <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin.min.js"></script>
+<!-- Custom scripts for all pages-->
+<script src="js/sb-admin.min.js"></script>
 
-    <!-- Demo scripts for this page-->
-    <script src="js/demo/datatables-demo.js"></script>
-    <script src="js/demo/chart-area-demo.js"></script>
+<!-- Demo scripts for this page-->
+<script src="js/demo/datatables-demo.js"></script>
+<script src="js/demo/chart-area-demo.js"></script>
 
-  </body>
+</body>
 
 </html>
