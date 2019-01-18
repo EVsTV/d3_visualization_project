@@ -1,3 +1,5 @@
+![preview](./preview.png)
+
 # Electric Vehicles versus Thermic Vehicles (EVsTV)
 
 ## Description
@@ -51,3 +53,4 @@ tirées de cette étude: [Les potentiels du véhicule électrique, April 2016, L
 Avis de l'ADEME][article-fr]
 
 [article-fr]: https://www.ademe.fr/sites/default/files/assets/documents/avisademe-vehicule-electrique.pdf
+
